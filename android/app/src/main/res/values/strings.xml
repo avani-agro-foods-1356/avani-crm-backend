@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">AvaniCRM</string>
+    <string name="title_activity_main">AvaniCRM</string>
+    <string name="package_name">com.avaniloans.crm</string>
+    <string name="custom_url_scheme">com.avaniloans.crm</string>
+</resources>
