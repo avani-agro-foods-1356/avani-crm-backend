@@ -1,0 +1,26 @@
+[
+  {
+    "id": "5qclx2n",
+    "timestamp": "2026-06-23T12:09:27.018Z",
+    "payload": {
+      "type": "verification_attempt",
+      "query": {
+        "mode": "subscribe",
+        "token": "avani_secure_webhook_token_2026",
+        "challenge": "1453792221"
+      }
+    }
+  },
+  {
+    "id": "u0b0cpq",
+    "timestamp": "2026-06-23T08:04:54.033Z",
+    "payload": {
+      "type": "verification_attempt",
+      "query": {
+        "mode": "subscribe",
+        "token": "avani_secure_webhook_token_2026",
+        "challenge": "2127292456"
+      }
+    }
+  }
+]

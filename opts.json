@@ -1,0 +1,26 @@
+[
+  {
+    "id": "opt-1",
+    "phone": "+917219053645",
+    "status": "OPTED_IN",
+    "createdAt": "2026-06-24T06:00:00.000Z"
+  },
+  {
+    "id": "opt-2",
+    "phone": "+919175635165",
+    "status": "OPTED_IN",
+    "createdAt": "2026-06-24T06:00:00.000Z"
+  },
+  {
+    "id": "opt-3",
+    "phone": "+918668585890",
+    "status": "OPTED_IN",
+    "createdAt": "2026-06-24T06:00:00.000Z"
+  },
+  {
+    "id": "opt-4",
+    "phone": "+917249108474",
+    "status": "OPTED_IN",
+    "createdAt": "2026-06-24T06:00:00.000Z"
+  }
+]

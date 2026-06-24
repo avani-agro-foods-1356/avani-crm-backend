@@ -1,0 +1,163 @@
+[
+  {
+    "id": "f1-personal",
+    "name": "AVANI | Personal Loan Enquiry",
+    "headline": "Get Personal Loan up to ₹40 Lakhs",
+    "description": "Quick Eligibility Check, Fast Processing, Minimal Documentation, Expert Assistance",
+    "fields": "Full Name, Mobile Number, Email Address, City, Required Loan Amount, Employment Type, Monthly Income",
+    "options": {
+      "loanAmount": ["₹50,000 – ₹2 Lakhs", "₹2 Lakhs – ₹5 Lakhs", "₹5 Lakhs – ₹10 Lakhs", "Above ₹10 Lakhs"],
+      "employmentType": ["Salaried", "Self Employed", "Business Owner", "Professional"],
+      "monthlyIncome": ["₹25K–₹50K", "₹50K–₹1L", "₹1L–₹2L", "Above ₹2L"]
+    },
+    "privacyPolicy": "https://www.avanifinserv.com",
+    "thankYouScreen": {
+      "headline": "Application Received",
+      "button": "Chat on WhatsApp"
+    },
+    "assignment": "Personal Loan Team",
+    "docs": "PAN Card, Aadhaar Card, Salary Slips, Bank Statement"
+  },
+  {
+    "id": "f2-business",
+    "name": "AVANI | Business Loan Enquiry",
+    "headline": "Grow Your Business with AVANI Business Loans",
+    "description": "Easy Working Capital, High Disbursals, Flexible EMI Tenures",
+    "fields": "Full Name, Mobile Number, Business Name, Business Vintage, Annual Turnover, Loan Requirement, Required Amount",
+    "options": {
+      "businessVintage": ["Less than 1 Year", "1–3 Years", "3–5 Years", "5+ Years"],
+      "annualTurnover": ["₹10L–₹25L", "₹25L–₹50L", "₹50L–₹1Cr", "Above ₹1Cr"],
+      "loanRequirement": ["Working Capital", "Expansion", "Machinery", "OD/CC", "Term Loan"]
+    },
+    "privacyPolicy": "https://www.avanifinserv.com",
+    "thankYouScreen": {
+      "headline": "Application Received",
+      "button": "Chat on WhatsApp"
+    },
+    "assignment": "Business Loan Desk",
+    "docs": "GST Returns, ITR, Bank Statements, Udyam Registration, Company PAN"
+  },
+  {
+    "id": "f3-doctor",
+    "name": "AVANI | Doctor Loan Enquiry",
+    "headline": "Professional Loans for Doctors & Specialists",
+    "description": "Specialized Funding for Clinic Setup, Equipment, & Expansion",
+    "fields": "Name, Mobile, Profession, Experience, Annual Income, Loan Requirement",
+    "options": {
+      "profession": ["Doctor", "Dentist", "CA", "Architect", "Consultant", "Other Professional"],
+      "loanRequirement": ["Clinic Setup", "Equipment", "Expansion", "Personal Need"]
+    },
+    "privacyPolicy": "https://www.avanifinserv.com",
+    "thankYouScreen": {
+      "headline": "Application Received",
+      "button": "Chat on WhatsApp"
+    },
+    "assignment": "Professional Loan Team",
+    "docs": "Degree Certificate, Registration Certificate, ITR, Bank Statements"
+  },
+  {
+    "id": "f4-home",
+    "name": "AVANI | Home Loan Assistance",
+    "headline": "Lowest Home Loan Interest Rates starting from 8.4%",
+    "description": "Expert Assistance, Quick Approvals, Resale & Plot Funding",
+    "fields": "Name, Mobile, Property Location, Property Type, Property Value, Required Loan Amount, Employment Type",
+    "options": {
+      "propertyType": ["New Home", "Resale", "Plot + Construction", "Construction"]
+    },
+    "privacyPolicy": "https://www.avanifinserv.com",
+    "thankYouScreen": {
+      "headline": "Application Received",
+      "button": "Chat on WhatsApp"
+    },
+    "assignment": "Home Loan Specialist",
+    "docs": "Aadhaar, PAN, Income Proof, Property Documents"
+  },
+  {
+    "id": "f5-mortgage",
+    "name": "AVANI | Mortgage Loan",
+    "headline": "Unlock the Value of Your Property",
+    "description": "Loan Against Property with Low EMI Rates",
+    "fields": "Name, Mobile, Property Type, Property Market Value, Existing Loan on Property?, Required Amount",
+    "options": {
+      "existingLoan": ["Yes", "No"]
+    },
+    "privacyPolicy": "https://www.avanifinserv.com",
+    "thankYouScreen": {
+      "headline": "Application Received",
+      "button": "Chat on WhatsApp"
+    },
+    "assignment": "Mortgage Team",
+    "docs": "Property Papers, Latest Tax Receipt, PAN, Aadhaar, Bank Statements"
+  },
+  {
+    "id": "f6-edu-india",
+    "name": "AVANI | Education Loan (INDIA)",
+    "headline": "Fund Your Higher Studies in India's Premier Colleges",
+    "description": "100% Funding, Collateral-Free Options, Pre-Admission Approvals",
+    "fields": "Student Name, Parent Name, Mobile Number, Course Name, College Name, Course Fees, State",
+    "privacyPolicy": "https://www.avanifinserv.com",
+    "thankYouScreen": {
+      "headline": "Application Received",
+      "button": "Chat on WhatsApp"
+    },
+    "assignment": "India Education Loan Team",
+    "docs": "Admission Letter, Fee Structure, Aadhaar, PAN, Academic Records"
+  },
+  {
+    "id": "f7-edu-abroad",
+    "name": "AVANI | Education Loan (ABROAD)",
+    "headline": "Global Studies Education Loans with Easy Processing",
+    "description": "Fund USA, UK, Canada, Australia and Germany Study Admissions",
+    "fields": "Student Name, Mobile Number, Country, University Name, Course, Total Cost, Intake",
+    "options": {
+      "country": ["USA", "UK", "Canada", "Australia", "Germany", "Ireland", "Other"],
+      "intake": ["Jan", "May", "Sep"]
+    },
+    "privacyPolicy": "https://www.avanifinserv.com",
+    "thankYouScreen": {
+      "headline": "Application Received",
+      "button": "Chat on WhatsApp"
+    },
+    "assignment": "Global Education Team",
+    "docs": "Offer Letter, Passport, Academic Records, Co-applicant Income Proof"
+  },
+  {
+    "id": "f8-school",
+    "name": "AVANI | School & College Funding",
+    "headline": "Institutional Funding for Educational Infrastructures",
+    "description": "Expand School Blocks, Buy Machinery, Upgrade Degree Colleges",
+    "fields": "Institution Name, Contact Person, Mobile Number, Institution Type, Funding Requirement, Required Amount",
+    "options": {
+      "institutionType": ["School", "Junior College", "Degree College", "University"],
+      "fundingRequirement": ["Infrastructure", "Expansion", "Equipment", "Working Capital"]
+    },
+    "privacyPolicy": "https://www.avanifinserv.com",
+    "thankYouScreen": {
+      "headline": "Application Received",
+      "button": "Chat on WhatsApp"
+    },
+    "assignment": "Institution Funding Team",
+    "docs": "Trust Registration, Financial Statements, Institution Approval Documents"
+  },
+  {
+    "id": "f9-cibil",
+    "name": "AVANI | CIBIL Improvement Consultation",
+    "headline": "Improve Your Credit Score & Get Loan Approval",
+    "description": "Professional advice to improve your credit score, resolve defaults, and build a strong credit profile.",
+    "fields": "Full Name, Mobile Number, Email Address, Current CIBIL, Past Loan Rejection, CIBIL Issue, Goal, Timeline",
+    "options": {
+      "cibilRange": ["Below 550", "550 – 650", "650 – 700", "Above 700", "Not Sure"],
+      "rejectionStatus": ["Yes", "No"],
+      "cibilIssue": ["Late Payments", "Credit Card Outstanding", "Loan Settlement", "Multiple Enquiries", "Not Sure"],
+      "loanGoal": ["Personal Loan", "Home Loan", "Business Loan", "Credit Card", "General Improvement"],
+      "timeline": ["Immediately", "Within 30 Days", "Within 90 Days", "Just Need Consultation"]
+    },
+    "privacyPolicy": "https://www.avanifinserv.com",
+    "thankYouScreen": {
+      "headline": "Thank You For Your Interest",
+      "button": "WhatsApp Us"
+    },
+    "assignment": "Credit Counseling Team",
+    "docs": "Latest CIBIL Report, ID Proof, PAN Card"
+  }
+]

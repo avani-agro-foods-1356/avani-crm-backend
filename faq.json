@@ -1,0 +1,74 @@
+[
+  {
+    "id": "faq-1",
+    "keyword": "loan, loans, apply",
+    "reply": "We offer Personal Loans, Home Loans, Business Loans, and Loan Against Property. Reply with the loan type you're interested in for more details!",
+    "createdAt": "2026-06-24T06:00:00.000Z"
+  },
+  {
+    "id": "faq-2",
+    "keyword": "personal loan, pl",
+    "reply": "🏦 Personal Loan Details:\n✅ Loan Amount: ₹50,000 – ₹50 Lakhs\n✅ Interest Rate: Starting from 10.5% p.a.\n✅ Tenure: 12 – 60 months\n✅ Processing Time: 24-48 hours\n✅ Minimal documentation required\n\nReply YES to start your eligibility check!",
+    "createdAt": "2026-06-24T06:00:00.000Z"
+  },
+  {
+    "id": "faq-3",
+    "keyword": "home loan, hl, home, mortgage",
+    "reply": "🏠 Home Loan Details:\n✅ Loan Amount: Up to ₹5 Crore\n✅ Interest Rate: Starting from 8.5% p.a.\n✅ Tenure: Up to 30 years\n✅ Up to 90% of property value financed\n✅ Balance transfer available\n\nReply YES to check your eligibility!",
+    "createdAt": "2026-06-24T06:00:00.000Z"
+  },
+  {
+    "id": "faq-4",
+    "keyword": "business loan, bl, business",
+    "reply": "💼 Business Loan Details:\n✅ Loan Amount: ₹1 Lakh – ₹2 Crore\n✅ Interest Rate: Starting from 12% p.a.\n✅ Tenure: 12 – 84 months\n✅ No collateral required (unsecured)\n✅ GST registered businesses preferred\n\nReply YES to start your application!",
+    "createdAt": "2026-06-24T06:00:00.000Z"
+  },
+  {
+    "id": "faq-5",
+    "keyword": "eligibility",
+    "reply": "📋 General Loan Eligibility Criteria:\n✅ Age: 21 – 60 years\n✅ Min. Monthly Salary: ₹15,000 (salaried) or ₹2 Lakh p.a. (self-employed)\n✅ CIBIL Score: 650 or above preferred\n✅ Employment: Min. 1 year (salaried) or 2 years (business)\n\nReply with your loan type to check specific eligibility!",
+    "createdAt": "2026-06-24T06:00:00.000Z"
+  },
+  {
+    "id": "faq-6",
+    "keyword": "documents, doc",
+    "reply": "📄 Documents Required:\n\n🔹 Identity Proof: Aadhaar / PAN / Passport\n🔹 Address Proof: Aadhaar / Utility Bill\n🔹 Income Proof: Last 3 months salary slips or ITR\n🔹 Bank Statement: Last 6 months\n🔹 Passport Size Photos\n\nSend clear photos/PDF to speed up approval!",
+    "createdAt": "2026-06-24T06:00:00.000Z"
+  },
+  {
+    "id": "faq-7",
+    "keyword": "interest rate, rate, roi",
+    "reply": "📊 Interest Rates at Avani Loan Services:\n\n• Personal Loan: 10.5% – 24% p.a.\n• Home Loan: 8.5% – 12% p.a.\n• Business Loan: 12% – 24% p.a.\n• Loan Against Property: 9% – 15% p.a.\n\nRates depend on your CIBIL score, income, and loan amount. Reply to get a personalised quote!",
+    "createdAt": "2026-06-24T06:00:00.000Z"
+  },
+  {
+    "id": "faq-8",
+    "keyword": "emi, calculator",
+    "reply": "💰 EMI Calculator Guide:\n\nFor ₹5 Lakh Personal Loan @ 12% for 36 months:\n➡ Monthly EMI ≈ ₹16,607\n\nFor ₹50 Lakh Home Loan @ 9% for 20 years:\n➡ Monthly EMI ≈ ₹44,986\n\nReply with your loan amount, tenure and type for a custom EMI estimate!",
+    "createdAt": "2026-06-24T06:00:00.000Z"
+  },
+  {
+    "id": "faq-9",
+    "keyword": "status, track",
+    "reply": "🔍 To check your loan application status, please share:\n1. Your registered mobile number\n2. Application reference number (if available)\n\nOur team will update you within 2 business hours. You can also call us at our office number or email: enquiry@avanifinserv.com",
+    "createdAt": "2026-06-24T06:00:00.000Z"
+  },
+  {
+    "id": "faq-10",
+    "keyword": "contact, call, email, number",
+    "reply": "📞 Contact Avani Loan Services:\n\n🏢 Company: Avani Loan Services\n👤 Advisor: Sachin Shinde\n📧 Email: enquiry@avanifinserv.com\n🌐 Website: www.avanifinserv.com\n📱 WhatsApp: +91 72491 08474\n\n🕐 Office Hours: Mon–Sat, 10 AM – 7 PM",
+    "createdAt": "2026-06-24T06:00:00.000Z"
+  },
+  {
+    "id": "faq-11",
+    "keyword": "cibil, score",
+    "reply": "📈 CIBIL Score Tips from Avani Loan Services:\n\n✅ Pay all EMIs on time\n✅ Keep credit utilization below 30%\n✅ Don't apply for multiple loans simultaneously\n✅ Check your CIBIL report regularly\n✅ Maintain old credit accounts\n\nWe help you get loans even with low CIBIL scores in some cases. Reply YES to know more!",
+    "createdAt": "2026-06-24T06:00:00.000Z"
+  },
+  {
+    "id": "faq-12",
+    "keyword": "hi, hello, hey",
+    "reply": "👋 Hello! Welcome to AVANI LOAN SERVICES!\n\nI'm your AI loan assistant. I can help you with:\n• 💰 Personal Loans (Reply PL)\n• 🏠 Home Loans (Reply HL)\n• 💼 Business Loans (Reply BL)\n• 📊 EMI Calculations\n• 📋 Eligibility Check\n\nType any keyword above or reply YES to start your loan application!",
+    "createdAt": "2026-06-24T06:00:00.000Z"
+  }
+]

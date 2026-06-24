@@ -1,0 +1,176 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Workspace {
+  id        String     @id @default(uuid())
+  name                      String // e.g., "Avani Loan Services"
+  timezone                  String?  @default("IST")
+  currency                  String?  @default("INR")
+  autoReply                 Boolean? @default(true)
+  whatsappToken             String?
+  whatsappPhoneNumberId     String?
+  whatsappBusinessAccountId String?
+  geminiApiKey              String?
+  createdAt                 DateTime @default(now())
+  users     User[]
+  contacts  Contact[]
+  campaigns Campaign[]
+  tags      Tag[]
+  tasks     Task[]
+  templates Template[]
+  projects  Project[]
+}
+
+model User {
+  id          String    @id @default(uuid())
+  email       String    @unique
+  name        String
+  role        Role      @default(AGENT) // ADMIN, MANAGER, AGENT
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  AGENT
+}
+
+model Contact {
+  id            String     @id @default(uuid())
+  phone         String     @unique // WhatsApp Number
+  name          String?
+  city          String?
+  income        Float?
+  profession    String?
+  loanType      String?
+  loanAmount    Float?
+  propertyValue Float?
+  status        LeadStatus @default(NEW_LEAD)
+  workspaceId   String
+  workspace     Workspace  @relation(fields: [workspaceId], references: [id])
+  projectId     String?
+  project       Project?   @relation(fields: [projectId], references: [id])
+  messages      Message[]
+  tags          Tag[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+enum LeadStatus {
+  NEW_LEAD
+  INTERESTED
+  DOCS_PENDING
+  BANK_PROCESSING
+  SANCTIONED
+  DISBURSED
+  CLOSED
+}
+
+model Message {
+  id        String    @id @default(uuid())
+  contactId String
+  contact   Contact   @relation(fields: [contactId], references: [id])
+  direction Direction // INBOUND (from customer), OUTBOUND (from bot/agent)
+  type      MsgType // TEXT, IMAGE, TEMPLATE
+  content   String
+  status    MsgStatus @default(SENT) // SENT, DELIVERED, READ, FAILED
+  timestamp DateTime  @default(now())
+}
+
+enum Direction {
+  INBOUND
+  OUTBOUND
+}
+
+enum MsgType {
+  TEXT
+  IMAGE
+  TEMPLATE
+  INTERACTIVE
+}
+
+enum MsgStatus {
+  SENT
+  DELIVERED
+  READ
+  FAILED
+}
+
+model Campaign {
+  id          String     @id @default(uuid())
+  name        String
+  templateId  String
+  status      CampStatus @default(DRAFT)
+  scheduledAt DateTime?
+  workspaceId String
+  workspace   Workspace  @relation(fields: [workspaceId], references: [id])
+  createdAt   DateTime   @default(now())
+}
+
+enum CampStatus {
+  DRAFT
+  SCHEDULED
+  RUNNING
+  COMPLETED
+  PAUSED
+}
+
+model Tag {
+  id          String    @id @default(uuid())
+  name        String
+  color       String    @default("#10b981")
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  contacts    Contact[]
+  createdAt   DateTime  @default(now())
+}
+
+model Task {
+  id          String     @id @default(uuid())
+  title       String
+  description String?
+  dueDate     DateTime?
+  status      TaskStatus @default(PENDING)
+  workspaceId String
+  workspace   Workspace  @relation(fields: [workspaceId], references: [id])
+  projectId   String?
+  project     Project?   @relation(fields: [projectId], references: [id])
+  createdAt   DateTime   @default(now())
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+model Template {
+  id          String    @id @default(uuid())
+  name        String
+  category    String    @default("MARKETING")
+  content     String
+  status      String    @default("APPROVED")
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  createdAt   DateTime  @default(now())
+}
+
+model Project {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  status      String    @default("ACTIVE") // ACTIVE, COMPLETED, ON_HOLD
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  tasks       Task[]
+  contacts    Contact[]
+  createdAt   DateTime  @default(now())
+}
