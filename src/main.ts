@@ -4,6 +4,7 @@ import { exec } from 'child_process';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api', { exclude: ['whatsapp/webhook'] });
   app.enableCors();
   
   const port = process.env.PORT ?? 4000;
