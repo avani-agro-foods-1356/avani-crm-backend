@@ -28,6 +28,7 @@ import { join } from 'path';
   imports: [
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
+      serveStaticOptions: { extensions: ['html'] },
     }),
     PrismaModule, 
     WhatsappModule, 
