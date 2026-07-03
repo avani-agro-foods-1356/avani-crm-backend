@@ -1,6 +1,6 @@
 "use client"
 
-const API_URL = typeof window !== 'undefined' ? ('https://chemicals-consisting-weekends-viewing.trycloudflare.com/api') : 'https://chemicals-consisting-weekends-viewing.trycloudflare.com/api';
+const API_URL = typeof window !== 'undefined' ? ('https://carlo-reads-numbers-smell.trycloudflare.com/api') : 'https://carlo-reads-numbers-smell.trycloudflare.com/api';
 import { useState, useEffect } from "react";
 import { Bot, Save } from "lucide-react";
 

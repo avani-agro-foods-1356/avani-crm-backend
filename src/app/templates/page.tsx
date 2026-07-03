@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Plus, Trash2, FileText, Send, RefreshCw } from "lucide-react";
 
-const API_URL = typeof window !== 'undefined' ? ('https://chemicals-consisting-weekends-viewing.trycloudflare.com/api') : 'https://chemicals-consisting-weekends-viewing.trycloudflare.com/api';
+const API_URL = typeof window !== 'undefined' ? ('https://carlo-reads-numbers-smell.trycloudflare.com/api') : 'https://carlo-reads-numbers-smell.trycloudflare.com/api';
 
 const preconfiguredTemplates = [
   {
