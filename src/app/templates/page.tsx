@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Plus, Trash2, FileText, Send } from "lucide-react";
+import { Plus, Trash2, FileText, Send, RefreshCw } from "lucide-react";
 
 const API_URL = typeof window !== 'undefined' ? (localStorage.getItem('AVANI_API_URL') || '/api') : '/api';
 
@@ -106,6 +106,7 @@ const preconfiguredTemplates = [
 export default function TemplatesPage() {
   const [templates, setTemplates] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [name, setName] = useState("");
   const [content, setContent] = useState("");
@@ -182,6 +183,25 @@ export default function TemplatesPage() {
     }
   };
 
+  const handleSync = async () => {
+    setSyncing(true);
+    try {
+      const res = await fetch(`${API_URL}/templates/sync`, { method: 'POST' });
+      const data = await res.json();
+      if (res.ok) {
+        alert(data.message || "Templates synced successfully");
+        fetchTemplates();
+      } else {
+        alert(data.message || "Failed to sync templates");
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Error syncing with Meta");
+    } finally {
+      setSyncing(false);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-6 h-full p-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -189,13 +209,23 @@ export default function TemplatesPage() {
           <h2 className="text-2xl font-bold tracking-tight text-white">WhatsApp Templates</h2>
           <p className="text-sm text-zinc-400">Draft, submit, and manage pre-approved WhatsApp message templates.</p>
         </div>
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-500 transition-colors text-sm"
-        >
-          <Plus className="w-4 h-4" />
-          Create Template
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={handleSync}
+            disabled={syncing}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600/20 text-indigo-400 border border-indigo-600/30 rounded-lg font-medium hover:bg-indigo-600/30 transition-colors text-sm disabled:opacity-50"
+          >
+            <RefreshCw className={`w-4 h-4 ${syncing ? 'animate-spin' : ''}`} />
+            {syncing ? 'Syncing...' : 'Sync from Meta'}
+          </button>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-500 transition-colors text-sm"
+          >
+            <Plus className="w-4 h-4" />
+            Create Template
+          </button>
+        </div>
       </div>
 
       {loading ? (
