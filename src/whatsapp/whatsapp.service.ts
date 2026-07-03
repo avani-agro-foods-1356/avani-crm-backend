@@ -169,7 +169,7 @@ export class WhatsappService {
         where: { id: contact.id },
         data: {
           tags: { connect: { id: tag.id } },
-          status: 'INTERESTED'
+          status: 'QUALIFIED'
         }
       });
 
@@ -180,7 +180,7 @@ export class WhatsappService {
     else if (lastOutbound.includes('begin document collection') || lastOutbound.includes('PAN Card')) {
       await this.prisma.contact.update({
         where: { id: contact.id },
-        data: { status: 'DOCS_PENDING' } // Transition to document collection state
+        data: { status: 'DOCS_REQUESTED' } // Transition to document collection state
       });
       aiResponseText = "Thank you! Documents received successfully. Your loan application has been submitted and is currently under 'Application Processing' (Stage 5). We will update you shortly.";
     }

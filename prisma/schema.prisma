@@ -54,6 +54,19 @@ model Contact {
   loanAmount    Float?
   propertyValue Float?
   status        LeadStatus @default(NEW_LEAD)
+  email         String?
+  employmentType String?
+  eligibilityReason String?
+  source        String?
+  callSid       String?
+  transcript    String?
+  recordingUrl  String?
+  hubspotSynced Int? @default(0)
+  sheetsSynced  Int? @default(0)
+  makeSynced    Int? @default(0)
+  pabblySynced  Int? @default(0)
+  pickyassistSynced Int? @default(0)
+  employmentHistory String?
   workspaceId   String
   workspace     Workspace  @relation(fields: [workspaceId], references: [id])
   projectId     String?
@@ -66,12 +79,16 @@ model Contact {
 
 enum LeadStatus {
   NEW_LEAD
-  INTERESTED
-  DOCS_PENDING
-  BANK_PROCESSING
-  SANCTIONED
+  CONTACT_ATTEMPTED
+  QUALIFIED
+  DOCS_REQUESTED
+  DOCS_RECEIVED
+  ELIGIBILITY_REVIEW
+  LENDER_SUBMISSION
+  UNDER_PROCESS
+  APPROVED
   DISBURSED
-  CLOSED
+  REFERRAL_REQUESTED
 }
 
 model Message {
@@ -158,6 +175,8 @@ model Template {
   category    String    @default("MARKETING")
   content     String
   status      String    @default("APPROVED")
+  volume      String?
+  product     String?
   workspaceId String
   workspace   Workspace @relation(fields: [workspaceId], references: [id])
   createdAt   DateTime  @default(now())

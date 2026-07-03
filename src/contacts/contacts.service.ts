@@ -194,7 +194,56 @@ export class ContactsService {
     });
   }
 
-  update(id: string, data: Prisma.ContactUpdateInput) {
+  async update(id: string, data: Prisma.ContactUpdateInput) {
+    if (data.status) {
+      const currentContact = await this.prisma.contact.findUnique({ where: { id } });
+      if (currentContact && currentContact.status !== data.status) {
+        let autoReplyMessage = '';
+        const newStatus = data.status as string;
+        
+        switch (newStatus) {
+          case 'CONTACT_ATTEMPTED':
+            autoReplyMessage = 'Hi! We recently tried to reach you regarding your loan application. Please let us know a good time to connect. - Avani Loan Services';
+            break;
+          case 'QUALIFIED':
+            autoReplyMessage = 'Great news! You have been preliminarily qualified for the loan. Our team will guide you on the next steps shortly.';
+            break;
+          case 'DOCS_REQUESTED':
+            autoReplyMessage = 'Please submit your required documents to process your loan application faster. Check the list here: https://www.avanifinserv.com/documents';
+            break;
+          case 'DOCS_RECEIVED':
+            autoReplyMessage = 'Thank you! We have received your documents. We will review them and update you on your eligibility.';
+            break;
+          case 'ELIGIBILITY_REVIEW':
+            autoReplyMessage = 'Your profile is currently under Eligibility Review by our financial experts. We will share an update within 24 hours.';
+            break;
+          case 'LENDER_SUBMISSION':
+            autoReplyMessage = 'Your application has been successfully submitted to our partner banks. We are negotiating the best rates for you!';
+            break;
+          case 'UNDER_PROCESS':
+            autoReplyMessage = 'Your loan application is currently under process with the bank. We will notify you as soon as there is an update.';
+            break;
+          case 'APPROVED':
+            autoReplyMessage = 'Congratulations! Your loan has been APPROVED! Our advisor will call you to discuss the final sanction letter.';
+            break;
+          case 'DISBURSED':
+            autoReplyMessage = '🎉 Your loan amount has been successfully disbursed to your bank account! Thank you for choosing Avani Loan Services.';
+            break;
+          case 'REFERRAL_REQUESTED':
+            autoReplyMessage = 'We hope you had a great experience with us! If you know anyone looking for a loan, please refer them to Avani Loan Services. We appreciate your support!';
+            break;
+        }
+
+        if (autoReplyMessage && currentContact.phone) {
+          try {
+            await this.sendDirectMessage(currentContact.phone, autoReplyMessage);
+          } catch (e) {
+            console.error('Failed to send auto-reply for status update', e);
+          }
+        }
+      }
+    }
+
     return this.prisma.contact.update({
       where: { id },
       data,
