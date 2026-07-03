@@ -24,7 +24,7 @@ export function Sidebar({ className = "" }: { className?: string }) {
     { name: "Webhook Events", icon: Globe, href: "/webhooks" },
     { name: "Gallery", icon: ImageIcon, href: "/gallery" },
     { name: "FAQ Bot", icon: HelpCircle, href: "/faq" },
-    { name: "Chatbot", icon: MessageSquare, href: "/inbox" }, // reusing inbox for now
+    { name: "Chatbot", icon: MessageSquare, href: "https://avani-loan-agents.onrender.com/dashboard" }, 
     { name: "Ai assistant", icon: Bot, href: "/assistant" },
     { name: "Flows", icon: GitMerge, href: "/flows" },
     { name: "Projects", icon: Folder, href: "/projects" },
@@ -43,7 +43,7 @@ export function Sidebar({ className = "" }: { className?: string }) {
       <div className="flex-1 py-4 overflow-y-auto custom-scrollbar">
         <nav className="flex flex-col gap-1 px-3">
           {menuItems.map((item) => {
-            const isActive = pathname === item.href || (item.name === "Ai assistant"); // Defaulting AI assistant to active for the screenshot look
+            const isActive = pathname === item.href;
             return (
               <Link 
                 key={item.name}
