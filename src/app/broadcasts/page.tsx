@@ -8,7 +8,7 @@ import {
   AlertTriangle, Play, Upload, HelpCircle, ArrowRight, ArrowLeft, RefreshCw, Trash2
 } from "lucide-react";
 
-const API_URL = typeof window !== 'undefined' ? (localStorage.getItem('AVANI_API_URL') || 'https://chemicals-consisting-weekends-viewing.trycloudflare.com/api') : 'https://chemicals-consisting-weekends-viewing.trycloudflare.com/api';
+const API_URL = typeof window !== 'undefined' ? ('https://chemicals-consisting-weekends-viewing.trycloudflare.com/api') : 'https://chemicals-consisting-weekends-viewing.trycloudflare.com/api';
 
 const presetBroadcastTemplates = [
   {

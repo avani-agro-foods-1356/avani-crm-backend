@@ -18,11 +18,11 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
 
   // Helper to get active backend URL dynamically
-  const API_URL = typeof window !== 'undefined' ? (localStorage.getItem('AVANI_API_URL') || 'https://chemicals-consisting-weekends-viewing.trycloudflare.com/api') : 'https://chemicals-consisting-weekends-viewing.trycloudflare.com/api';
+  const API_URL = typeof window !== 'undefined' ? ('https://chemicals-consisting-weekends-viewing.trycloudflare.com/api') : 'https://chemicals-consisting-weekends-viewing.trycloudflare.com/api';
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setBackendApiUrl(localStorage.getItem('AVANI_API_URL') || "");
+      setBackendApiUrl("");
     }
     fetch(`${API_URL}/settings`)
       .then(res => res.json())
