@@ -1,6 +1,6 @@
 "use client"
 
-const API_URL = typeof window !== 'undefined' ? (localStorage.getItem('AVANI_API_URL') || '/api') : '/api';
+const API_URL = typeof window !== 'undefined' ? (localStorage.getItem('AVANI_API_URL') || 'https://chemicals-consisting-weekends-viewing.trycloudflare.com/api') : 'https://chemicals-consisting-weekends-viewing.trycloudflare.com/api';
 
 import { useState, useEffect } from "react";
 import { Search, Plus, Filter, MoreHorizontal, FileDown, MessageSquare, Send, Image, Video, FileText, Phone, Settings, CheckCircle2, AlertTriangle, RefreshCw, Eye, X } from "lucide-react";
