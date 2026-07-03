@@ -19,4 +19,9 @@ export class TemplatesController {
   remove(@Param('id') id: string) {
     return this.templatesService.remove(id);
   }
+
+  @Post('sync')
+  syncFromMeta() {
+    return this.templatesService.syncFromMeta();
+  }
 }
