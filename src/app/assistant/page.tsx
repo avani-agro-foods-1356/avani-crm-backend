@@ -1,4 +1,6 @@
-"use client";
+"use client"
+
+const API_URL = typeof window !== 'undefined' ? (localStorage.getItem('AVANI_API_URL') || '/api') : '/api';
 import { useState, useEffect } from "react";
 import { Bot, Save } from "lucide-react";
 
@@ -10,7 +12,7 @@ export default function AssistantPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('https://workplace-kay-exchanges-psi.trycloudflare.com/assistant')
+    fetch(`${API_URL}/assistant`)
       .then(res => res.json())
       .then(data => {
         if (data && data[0]) {
@@ -30,7 +32,7 @@ export default function AssistantPage() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch('https://workplace-kay-exchanges-psi.trycloudflare.com/assistant', {
+      const res = await fetch(`${API_URL}/assistant`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, model, systemPrompt, temperature }),

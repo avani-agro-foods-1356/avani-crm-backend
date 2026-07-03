@@ -30,6 +30,27 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `
+          if (typeof window !== 'undefined') {
+            const originalFetch = window.fetch;
+            window.fetch = function (input, init) {
+              if (typeof input === 'string' && (input.includes('.loca.lt') || input.includes('localhost') || input.includes('127.0.0.1'))) {
+                init = init || {};
+                init.headers = init.headers || {};
+                if (init.headers instanceof Headers) {
+                  init.headers.set('bypass-tunnel-reminder', 'true');
+                } else if (Array.isArray(init.headers)) {
+                  init.headers.push(['bypass-tunnel-reminder', 'true']);
+                } else {
+                  init.headers['bypass-tunnel-reminder'] = 'true';
+                }
+              }
+              return originalFetch.call(this, input, init);
+            };
+          }
+        ` }} />
+      </head>
       <body className="flex h-full min-h-screen bg-white text-zinc-950 dark:bg-black dark:text-zinc-50">
         <Sidebar className="hidden md:flex" />
         <div className="flex flex-1 flex-col overflow-hidden">

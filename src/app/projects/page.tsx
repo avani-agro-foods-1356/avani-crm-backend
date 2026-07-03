@@ -1,4 +1,6 @@
-"use client";
+"use client"
+
+const API_URL = typeof window !== 'undefined' ? (localStorage.getItem('AVANI_API_URL') || '/api') : '/api';
 import { useState, useEffect } from "react";
 import { Plus, MoreHorizontal } from "lucide-react";
 
@@ -8,7 +10,7 @@ export default function ProjectsPage() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('https://workplace-kay-exchanges-psi.trycloudflare.com/projects');
+      const response = await fetch(`${API_URL}/projects`);
       if (response.ok) {
         const data = await response.json();
         setItems(data);
@@ -29,7 +31,7 @@ export default function ProjectsPage() {
     if (!val) return;
 
     try {
-      const response = await fetch('https://workplace-kay-exchanges-psi.trycloudflare.com/projects', {
+      const response = await fetch(`${API_URL}/projects`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: val }),
@@ -49,7 +51,7 @@ export default function ProjectsPage() {
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this item?")) return;
     try {
-      await fetch(`https://workplace-kay-exchanges-psi.trycloudflare.com/projects/${id}`, { method: 'DELETE' });
+      await fetch(`${API_URL}/projects/${id}`, { method: 'DELETE' });
       fetchData();
     } catch (error) {
       console.error(error);

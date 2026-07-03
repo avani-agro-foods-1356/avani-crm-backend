@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Image as ImageIcon, UploadCloud, Trash2, FileText, Download } from "lucide-react";
 
-const API_URL = 'https://workplace-kay-exchanges-psi.trycloudflare.com';
+const API_URL = typeof window !== 'undefined' ? (localStorage.getItem('AVANI_API_URL') || '/api') : '/api';
 
 export default function GalleryPage() {
   const [files, setFiles] = useState<any[]>([]);

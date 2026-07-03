@@ -5,7 +5,8 @@ import { usePathname } from 'next/navigation';
 import { 
   FileText, ClipboardList, Tag, Columns, Settings2, Globe, 
   Image as ImageIcon, HelpCircle, MessageSquare, Bot, GitMerge, 
-  Folder, CheckCircle, Settings, Book, Code, Phone, Users
+  Folder, CheckCircle, Settings, Book, Code, Phone, Users, Smartphone,
+  Megaphone
 } from 'lucide-react';
 
 export function Sidebar({ className = "" }: { className?: string }) {
@@ -13,8 +14,10 @@ export function Sidebar({ className = "" }: { className?: string }) {
   
   const menuItems = [
     { name: "Contacts", icon: Users, href: "/contacts" },
+    { name: "Broadcasts", icon: Megaphone, href: "/broadcasts" },
     { name: "Whatsapp Templates", icon: FileText, href: "/templates" },
     { name: "Whatsapp Forms", icon: ClipboardList, href: "/forms" },
+    { name: "Conversational Components", icon: Smartphone, href: "/conversational-components" },
     { name: "Tags", icon: Tag, href: "/tags" },
     { name: "Columns", icon: Columns, href: "/columns" },
     { name: "Opts Management", icon: Settings2, href: "/opts" },

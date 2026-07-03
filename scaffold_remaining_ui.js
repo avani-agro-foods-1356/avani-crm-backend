@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const API_URL = 'https://workplace-kay-exchanges-psi.trycloudflare.com';
+const API_URL = 'https://celebrity-assessment-lawn-villas.trycloudflare.com';
 
 const pages = [
   {

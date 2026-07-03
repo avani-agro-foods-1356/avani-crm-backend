@@ -1,4 +1,6 @@
-"use client";
+"use client"
+
+const API_URL = typeof window !== 'undefined' ? (localStorage.getItem('AVANI_API_URL') || '/api') : '/api';
 import { useState, useEffect } from "react";
 import { Plus, Trash2 } from "lucide-react";
 
@@ -8,7 +10,7 @@ export default function Page() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('https://workplace-kay-exchanges-psi.trycloudflare.com/faq');
+      const response = await fetch(`${API_URL}/faq`);
       if (response.ok) {
         const data = await response.json();
         setItems(data);
@@ -29,7 +31,7 @@ export default function Page() {
     if (!val) return;
 
     try {
-      const response = await fetch('https://workplace-kay-exchanges-psi.trycloudflare.com/faq', {
+      const response = await fetch(`${API_URL}/faq`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -52,7 +54,7 @@ export default function Page() {
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this item?")) return;
     try {
-      const res = await fetch(`https://workplace-kay-exchanges-psi.trycloudflare.com/faq/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_URL}/faq/${id}`, { method: 'DELETE' });
       if (res.ok) {
         fetchData();
       }
@@ -93,7 +95,7 @@ export default function Page() {
               )}
               {items.map((item) => (
                 <tr key={item.id} className="border-b border-zinc-800 hover:bg-zinc-800/30 transition-colors">
-                  <td className="px-6 py-4 font-medium text-zinc-200">{item.trigger || '-'}</td>
+                  <td className="px-6 py-4 font-medium text-zinc-200">{item.keyword || '-'}</td>
                   <td className="px-6 py-4 font-medium text-zinc-200">{item.reply || '-'}</td>
                   <td className="px-6 py-4">{item.createdAt ? new Date(item.createdAt).toLocaleDateString() : '-'}</td>
                   <td className="px-6 py-4 text-right">

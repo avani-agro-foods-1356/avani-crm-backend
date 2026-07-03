@@ -2,7 +2,106 @@
 import { useState, useEffect } from "react";
 import { Plus, Trash2, FileText, Send } from "lucide-react";
 
-const API_URL = 'https://workplace-kay-exchanges-psi.trycloudflare.com';
+const API_URL = typeof window !== 'undefined' ? (localStorage.getItem('AVANI_API_URL') || '/api') : '/api';
+
+const preconfiguredTemplates = [
+  {
+    id: "t1",
+    name: "personal_loan_application_status",
+    category: "UTILITY",
+    content: "Personal Loan Update\n\nHello {{1}},\n\nYour Personal Loan application reference number {{2}} has been successfully received by AVANI LOAN SERVICES.\n\nCurrent Status: {{3}}\n\nOur team will contact you shortly for the next steps.\n\nThank you.",
+    status: "APPROVED",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "t2",
+    name: "business_loan_status_update",
+    category: "UTILITY",
+    content: "Business Loan Update\n\nHello {{1}},\n\nYour Business Loan application {{2}} is currently under review.\n\nCurrent Status: {{3}}\n\nOur loan advisor will keep you informed regarding further processing.\n\nThank you.",
+    status: "APPROVED",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "t3",
+    name: "doctor_loan_application_update",
+    category: "UTILITY",
+    content: "Doctor Loan Update\n\nHello Dr. {{1}},\n\nYour Doctor Loan application {{2}} has been processed.\n\nCurrent Status: {{3}}\n\nFor any queries, please reply to this message.\n\nThank you.",
+    status: "APPROVED",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "t4",
+    name: "ca_loan_application_update",
+    category: "UTILITY",
+    content: "CA Professional Loan Update\n\nHello {{1}},\n\nYour Chartered Accountant Loan application reference {{2}} is currently {{3}}.\n\nOur team will contact you regarding further requirements if needed.\n\nThank you.",
+    status: "APPROVED",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "t5",
+    name: "home_loan_status_update",
+    category: "UTILITY",
+    content: "Home Loan Update\n\nHello {{1}},\n\nYour Home Loan application {{2}} is currently at the following stage:\n\n{{3}}\n\nOur representative will guide you through the next process.\n\nThank you.",
+    status: "APPROVED",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "t6",
+    name: "mortgage_loan_status_update",
+    category: "UTILITY",
+    content: "Mortgage Loan Update\n\nHello {{1}},\n\nWe would like to inform you that your Mortgage Loan application {{2}} is currently:\n\n{{3}}\n\nFor assistance, please reply to this message.\n\nThank you.",
+    status: "APPROVED",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "t7",
+    name: "education_loan_india_update",
+    category: "UTILITY",
+    content: "Education Loan Update\n\nHello {{1}},\n\nYour Education Loan (India) application {{2}} has been updated.\n\nCurrent Status: {{3}}\n\nOur team will assist you with the next steps.\n\nThank you.",
+    status: "APPROVED",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "t8",
+    name: "education_loan_global_update",
+    category: "UTILITY",
+    content: "Global Education Loan Update\n\nHello {{1}},\n\nYour Global Education Loan application {{2}} is currently:\n\n{{3}}\n\nPlease keep the required documents ready for further processing.\n\nThank you.",
+    status: "APPROVED",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "t9",
+    name: "school_funding_application_update",
+    category: "UTILITY",
+    content: "School Funding Update\n\nHello {{1}},\n\nYour School Funding request {{2}} has been reviewed.\n\nCurrent Status: {{3}}\n\nOur funding specialist will contact you shortly.\n\nThank you.",
+    status: "APPROVED",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "t10",
+    name: "college_funding_application_update",
+    category: "UTILITY",
+    content: "College Funding Update\n\nHello {{1}},\n\nYour College Funding request {{2}} is currently:\n\n{{3}}\n\nPlease reply if you require any assistance.\n\nThank you.",
+    status: "APPROVED",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "t11",
+    name: "cibil_consultation_confirmation",
+    category: "UTILITY",
+    content: "Consultation Confirmation\n\nHello {{1}},\n\nYour CIBIL Improvement Consultation has been successfully scheduled.\n\nConsultation Date: {{2}}\nConsultation Time: {{3}}\n\nOur advisor will contact you at the scheduled time.\n\nThank you.",
+    status: "APPROVED",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "t12",
+    name: "document_verification_request",
+    category: "UTILITY",
+    content: "Document Verification\n\nHello {{1}},\n\nAdditional documents are required to process your application {{2}}.\n\nRequired Document: {{3}}\n\nPlease submit the requested document at the earliest convenience.\n\nThank you.",
+    status: "APPROVED",
+    createdAt: new Date().toISOString()
+  }
+];
 
 export default function TemplatesPage() {
   const [templates, setTemplates] = useState<any[]>([]);
@@ -17,10 +116,20 @@ export default function TemplatesPage() {
       const res = await fetch(`${API_URL}/templates`);
       if (res.ok) {
         const data = await res.json();
-        setTemplates(data);
+        if (data.length === 0) {
+          setTemplates(preconfiguredTemplates);
+        } else {
+          // Merge to avoid duplicates
+          const dbNames = new Set(data.map((d: any) => d.name));
+          const filteredPre = preconfiguredTemplates.filter(t => !dbNames.has(t.name));
+          setTemplates([...filteredPre, ...data]);
+        }
+      } else {
+        setTemplates(preconfiguredTemplates);
       }
     } catch (e) {
       console.error(e);
+      setTemplates(preconfiguredTemplates);
     } finally {
       setLoading(false);
     }
@@ -56,6 +165,10 @@ export default function TemplatesPage() {
   };
 
   const handleDelete = async (id: string) => {
+    if (id.startsWith('t')) {
+      alert("Pre-configured system templates cannot be deleted.");
+      return;
+    }
     if (!confirm("Are you sure you want to delete this template?")) return;
     try {
       const res = await fetch(`${API_URL}/templates/${id}`, {
@@ -102,6 +215,16 @@ export default function TemplatesPage() {
                   <span className="text-xs font-semibold px-2 py-1 rounded bg-zinc-800 text-zinc-300 uppercase">
                     {tpl.category}
                   </span>
+                  {tpl.volume && (
+                    <span className="text-xs font-semibold px-2 py-1 rounded bg-indigo-950 text-indigo-400">
+                      {tpl.volume}
+                    </span>
+                  )}
+                  {tpl.product && (
+                    <span className="text-xs font-semibold px-2 py-1 rounded bg-amber-950 text-amber-400">
+                      {tpl.product}
+                    </span>
+                  )}
                   <span className="text-xs font-semibold px-2 py-1 rounded bg-emerald-950 text-emerald-400">
                     {tpl.status}
                   </span>

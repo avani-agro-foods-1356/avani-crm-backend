@@ -1,4 +1,6 @@
-"use client";
+"use client"
+
+const API_URL = typeof window !== 'undefined' ? (localStorage.getItem('AVANI_API_URL') || '/api') : '/api';
 
 import { useState, useEffect } from "react";
 import { Send, User } from "lucide-react";
@@ -11,7 +13,7 @@ export default function InboxPage() {
 
   const fetchContacts = async () => {
     try {
-      const response = await fetch('https://workplace-kay-exchanges-psi.trycloudflare.com/contacts');
+      const response = await fetch(`${API_URL}/contacts`);
       const data = await response.json();
       setContacts(data);
     } catch (error) {
@@ -21,7 +23,7 @@ export default function InboxPage() {
 
   const fetchMessages = async (contactId: string) => {
     try {
-      const response = await fetch(`https://workplace-kay-exchanges-psi.trycloudflare.com/contacts/${contactId}`);
+      const response = await fetch(`${API_URL}/contacts/${contactId}`);
       const data = await response.json();
       setMessages(data.messages || []);
     } catch (error) {
@@ -55,7 +57,7 @@ export default function InboxPage() {
         timestamp: new Date().toISOString() 
       }]);
       
-      const response = await fetch('https://workplace-kay-exchanges-psi.trycloudflare.com/contacts/direct-message', {
+      const response = await fetch(`${API_URL}/contacts/direct-message`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone: contact.phone, message: replyText })
