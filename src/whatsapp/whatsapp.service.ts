@@ -180,7 +180,7 @@ export class WhatsappService {
     else if (lastOutbound.includes('begin document collection') || lastOutbound.includes('PAN Card')) {
       await this.prisma.contact.update({
         where: { id: contact.id },
-        data: { status: 'DOCS_REQUESTED' } // Transition to document collection state
+        data: { status: 'DOCUMENTS_PENDING' } // Transition to document collection state
       });
       aiResponseText = "Thank you! Documents received successfully. Your loan application has been submitted and is currently under 'Application Processing' (Stage 5). We will update you shortly.";
     }
@@ -194,9 +194,26 @@ export class WhatsappService {
     }
     // General Fallback
     else {
-      // Find the generic HI faq or default
-      const hiFaq = faqs.find((f: any) => f.keyword && f.keyword.includes('hi'));
-      aiResponseText = hiFaq ? hiFaq.reply : `Hello ${contact.name || 'there'}!\n\nThank you for contacting AVANI LOAN SERVICES.\n\nOur advisor will check your eligibility shortly.\n\nReply YES to continue.`;
+      try {
+        const response = await fetch('https://avani-loan-agents.onrender.com/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: [{ role: 'user', content: messageBody }] })
+        });
+        const text = await response.text();
+        let fullText = '';
+        const lines = text.split('\n');
+        for (const line of lines) {
+          if (line.startsWith('0:')) {
+            try {
+              fullText += JSON.parse(line.substring(2));
+            } catch(e) {}
+          }
+        }
+        aiResponseText = fullText || "I'm having trouble connecting to my AI brain. Please try again later.";
+      } catch (err) {
+        aiResponseText = "I'm having trouble connecting to my AI brain. Please try again later.";
+      }
     }
 
     // Save OUTBOUND message
@@ -253,13 +270,20 @@ export class WhatsappService {
         filename: mediaUrl.substring(mediaUrl.lastIndexOf('/') + 1) || 'document.pdf'
       };
     } else if (type === 'template' && mediaUrl) {
-      payload.type = 'template';
-      payload.template = {
-        name: mediaUrl,
-        language: { code: 'en_US' } // default to en_US for Meta templates
-      };
+      // If the template name has spaces or uppercase letters, it is a frontend dummy template.
+      // Meta only accepts lowercase and underscores. We safely fallback to sending it as a regular text message.
+      if (/[A-Z ]/.test(mediaUrl)) {
+        payload.type = 'text';
+        payload.text = { body: text };
+      } else {
+        payload.type = 'template';
+        payload.template = {
+          name: mediaUrl,
+          language: { code: 'en_US' } // default to en_US for Meta templates
+        };
+      }
       
-      if (templateParams && templateParams.length > 0) {
+      if (payload.template && templateParams && templateParams.length > 0) {
         payload.template.components = [
           {
             type: "body",
