@@ -70,150 +70,42 @@ export class WhatsappService {
       },
     });
 
-    // --- Multi-Stage CRM Workflow State Machine ---
-    // --- Multi-Stage CRM Workflow State Machine & FAQ Integration ---
+    // --- AI Agent Integration ---
     let aiResponseText = '';
-    const cleanMsg = messageBody.trim().toUpperCase();
 
-    // Fetch FAQs to check for keyword matches
-    const faqs = await this.faqService.findAll();
-    const matchedFaq = faqs.find((f: any) => {
-      if (!f.keyword) return false;
-      const keywords = f.keyword.split(',').map((k: string) => k.trim().toUpperCase());
-      return keywords.includes(cleanMsg) || keywords.some((k: string) => cleanMsg.includes(k));
-    });
-
-    // Fetch previous outbound messages to determine current conversation state
-    const previousMessages = await this.prisma.message.findMany({
-      where: { contactId: contact.id },
-      orderBy: { timestamp: 'desc' },
-      take: 10,
-    });
-
-    const outboundMsgs = previousMessages.filter(m => m.direction === 'OUTBOUND');
-    const lastOutbound = outboundMsgs[0]?.content || '';
-
-    // If an FAQ matched, use its reply
-    if (matchedFaq) {
-      aiResponseText = matchedFaq.reply;
-    }
-    // Stage 1 -> Stage 2 transition: User replies YES to continue
-    else if (cleanMsg === 'YES' && (lastOutbound.includes('Thank you for contacting AVANI') || lastOutbound.includes('start your loan application') || outboundMsgs.length === 0)) {
-      aiResponseText = "Great! Let's start the eligibility check. First, what is the name of your current company?";
-    }
-    // Company name response
-    else if (lastOutbound.includes('current company?')) {
-      // Save company response (could update profession or custom attributes)
-      await this.prisma.contact.update({
-        where: { id: contact.id },
-        data: { profession: messageBody.trim() }
-      });
-      aiResponseText = "Got it. What is your monthly in-hand salary (e.g. 45000)?";
-    }
-    // Salary response
-    else if (lastOutbound.includes('monthly in-hand salary')) {
-      const salaryVal = parseFloat(messageBody.replace(/[^0-9.]/g, '')) || 0;
-      await this.prisma.contact.update({
-        where: { id: contact.id },
-        data: { income: salaryVal }
-      });
-      aiResponseText = "Do you have any existing loans? If yes, what is the total monthly EMI you pay? (If none, reply 'No')";
-    }
-    // Existing loans response
-    else if (lastOutbound.includes('existing loans?')) {
-      // Save existing loan details as part of notes/tag or dummy context
-      aiResponseText = "What is the total loan amount you require (e.g. 500000)?";
-    }
-    // Loan amount response -> Trigger Gemini Lead Scoring (Stage 2) and Advisor Assignment (Stage 3)
-    else if (lastOutbound.includes('total loan amount you require')) {
-      const reqAmount = parseFloat(messageBody.replace(/[^0-9.]/g, '')) || 0;
-      const updatedContact = await this.prisma.contact.update({
-        where: { id: contact.id },
-        data: { loanAmount: reqAmount },
-        include: { tags: true }
+    try {
+      // Fetch conversation history
+      const previousMessages = await this.prisma.message.findMany({
+        where: { contactId: contact.id },
+        orderBy: { timestamp: 'asc' }, // Must be ascending for chronological order
+        take: 20, // Send last 20 messages for context
       });
 
-      // Lead Scoring using Gemini
-      let scoreTag = 'PL-WARM';
-      const credentials = await this.getCredentials();
-      if (credentials.geminiApiKey) {
-        try {
-          const genAI = new GoogleGenerativeAI(credentials.geminiApiKey);
-          const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-          const prompt = `Classify this loan lead into one category: "PL-HOT", "PL-WARM", or "PL-COLD".
-          Lead details:
-          - Company/Profession: ${updatedContact.profession || 'Unknown'}
-          - Monthly Salary: ${updatedContact.income || 0} INR
-          - Required Loan Amount: ${reqAmount} INR
-          Respond ONLY with the category name (e.g., PL-HOT).`;
-          
-          const result = await model.generateContent(prompt);
-          const responseText = result.response.text().trim().toUpperCase();
-          if (responseText.includes('HOT')) scoreTag = 'PL-HOT';
-          else if (responseText.includes('COLD')) scoreTag = 'PL-COLD';
-        } catch (e) {
-          this.logger.error(`Gemini lead scoring failed: ${e.message}`);
+      const aiMessages = previousMessages.map(m => ({
+        role: m.direction === 'INBOUND' ? 'user' : 'assistant',
+        content: m.content
+      }));
+
+      const response = await fetch('https://avani-loan-agents.onrender.com/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: aiMessages })
+      });
+      
+      const text = await response.text();
+      let fullText = '';
+      const lines = text.split('\n');
+      for (const line of lines) {
+        if (line.startsWith('0:')) {
+          try {
+            fullText += JSON.parse(line.substring(2));
+          } catch(e) {}
         }
       }
-
-      // Save lead tag in DB
-      let tag = await this.prisma.tag.findFirst({
-        where: { name: scoreTag, workspaceId: contact.workspaceId }
-      });
-      if (!tag) {
-        tag = await this.prisma.tag.create({
-          data: { name: scoreTag, workspaceId: contact.workspaceId, color: scoreTag.includes('HOT') ? '#ef4444' : scoreTag.includes('WARM') ? '#f59e0b' : '#3b82f6' }
-        });
-      }
-      await this.prisma.contact.update({
-        where: { id: contact.id },
-        data: {
-          tags: { connect: { id: tag.id } },
-          status: 'QUALIFIED'
-        }
-      });
-
-      // Stage 4: Ask for Documents
-      aiResponseText = `Thank you! Based on your inputs, your lead profile is scored as ${scoreTag}. We have auto-assigned our Personal Loan Team advisor to your application.\n\nTo begin document collection (Stage 4), please send clear photos or PDF copies of:\n1. PAN Card\n2. Aadhaar Card\n3. Salary Slips\n4. Bank Statement`;
-    }
-    // Document Submission response (Stage 4 -> Stage 5)
-    else if (lastOutbound.includes('begin document collection') || lastOutbound.includes('PAN Card')) {
-      await this.prisma.contact.update({
-        where: { id: contact.id },
-        data: { status: 'DOCUMENTS_PENDING' } // Transition to document collection state
-      });
-      aiResponseText = "Thank you! Documents received successfully. Your loan application has been submitted and is currently under 'Application Processing' (Stage 5). We will update you shortly.";
-    }
-    // Application Processing to Disbursement (Stage 5 -> Stage 6)
-    else if (lastOutbound.includes("under 'Application Processing'")) {
-      await this.prisma.contact.update({
-        where: { id: contact.id },
-        data: { status: 'DISBURSED' }
-      });
-      aiResponseText = "🎉 Loan Disbursed (Stage 6)!\n\nYour loan amount has been successfully disbursed to your bank account. Thank you for choosing Avani Loan Services.";
-    }
-    // General Fallback
-    else {
-      try {
-        const response = await fetch('https://avani-loan-agents.onrender.com/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: [{ role: 'user', content: messageBody }] })
-        });
-        const text = await response.text();
-        let fullText = '';
-        const lines = text.split('\n');
-        for (const line of lines) {
-          if (line.startsWith('0:')) {
-            try {
-              fullText += JSON.parse(line.substring(2));
-            } catch(e) {}
-          }
-        }
-        aiResponseText = fullText || "I'm having trouble connecting to my AI brain. Please try again later.";
-      } catch (err) {
-        aiResponseText = "I'm having trouble connecting to my AI brain. Please try again later.";
-      }
+      aiResponseText = fullText || "I'm having trouble connecting to my AI brain. Please try again later.";
+    } catch (err) {
+      this.logger.error(`AI Agent Error: ${err.message}`);
+      aiResponseText = "I'm having trouble connecting to my AI brain. Please try again later.";
     }
 
     // Save OUTBOUND message
