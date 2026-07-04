@@ -6,21 +6,21 @@ import {
 } from "lucide-react";
 
 const pipelineStages = [
-  "NEW_LEAD", "CONTACT_ATTEMPTED", "QUALIFIED", "DOCS_REQUESTED", "DOCS_RECEIVED", 
-  "ELIGIBILITY_REVIEW", "LENDER_SUBMISSION", "UNDER_PROCESS", 
-  "APPROVED", "DISBURSED", "REFERRAL_REQUESTED"
+  "NEW_LEAD", "CONTACTED", "QUALIFIED", "DOCUMENTS_PENDING", "DOCUMENTS_RECEIVED", 
+  "ELIGIBILITY_CHECK", "BANK_DISCUSSION", "APPLICATION_SUBMITTED", 
+  "SANCTION_RECEIVED", "DISBURSED", "CLOSED"
 ];
 
 const initialLeads = [
   { id: "L1", name: "Rajesh Kumar", phone: "+919876543210", product: "Personal / Salary", stage: "NEW_LEAD", tag: "PL-HOT", amount: "5,00,000" },
-  { id: "L2", name: "Amit Patel", phone: "+919876543211", product: "Business loan", stage: "CONTACT_ATTEMPTED", tag: "BL-WARM", amount: "25,00,000" },
-  { id: "L3", name: "Dr. Sunita Rao", phone: "+919876543212", product: "CA / Professional", stage: "QUALIFIED", tag: "PL-HOT", amount: "15,00,000" },
-  { id: "L4", name: "Meera Nair", phone: "+919876543214", product: "Home / Mortgage", stage: "DOCS_REQUESTED", tag: "HL-HOT", amount: "45,00,000" },
-  { id: "L5", name: "Vijay Sharma", phone: "+919876543213", product: "CA / Professional", stage: "DOCS_RECEIVED", tag: "BL-HOT", amount: "20,00,000" },
-  { id: "L6", name: "Ananya Sen", phone: "+919876543215", product: "Education (India)", stage: "ELIGIBILITY_REVIEW", tag: "EDU-INDIA", amount: "8,00,000" },
-  { id: "L7", name: "Vikramaditya Rao", phone: "+919876543216", product: "Education (Global)", stage: "LENDER_SUBMISSION", tag: "EDU-GLOBAL", amount: "35,00,000" },
-  { id: "L8", name: "St. Xavier Academy", phone: "+919876543217", product: "School funding", stage: "UNDER_PROCESS", tag: "SCHOOL-FUNDING", amount: "50,00,000" },
-  { id: "L9", name: "Vikas Commerce College", phone: "+919876543218", product: "college funding", stage: "APPROVED", tag: "COLLEGE-FUNDING", amount: "1,00,00,000" }
+  { id: "L2", name: "Amit Patel", phone: "+919876543211", product: "Business loan", stage: "CONTACTED", tag: "BL-WARM", amount: "25,00,000" },
+  { id: "L3", name: "Dr. Sunita Rao", phone: "+919876543212", product: "CA / Professional", stage: "QUALIFIED", tag: "DOC-HOT", amount: "15,00,000" },
+  { id: "L4", name: "Meera Nair", phone: "+919876543214", product: "Home / Mortgage", stage: "DOCUMENTS_PENDING", tag: "HL-HOT", amount: "45,00,000" },
+  { id: "L5", name: "Vijay Sharma", phone: "+919876543213", product: "CA / Professional", stage: "DOCUMENTS_RECEIVED", tag: "DOC-HOT", amount: "20,00,000" },
+  { id: "L6", name: "Ananya Sen", phone: "+919876543215", product: "Education (India)", stage: "ELIGIBILITY_CHECK", tag: "EDU-INDIA-HOT", amount: "8,00,000" },
+  { id: "L7", name: "Vikramaditya Rao", phone: "+919876543216", product: "Education (Global)", stage: "APPLICATION_SUBMITTED", tag: "EDU-GLOBAL-WARM", amount: "35,00,000" },
+  { id: "L8", name: "St. Xavier Academy", phone: "+919876543217", product: "School funding", stage: "BANK_DISCUSSION", tag: "SCHOOL-FUNDING-HOT", amount: "50,00,000" },
+  { id: "L9", name: "Vikas Commerce College", phone: "+919876543218", product: "college funding", stage: "SANCTION_RECEIVED", tag: "COLLEGE-FUNDING-HOT", amount: "1,00,00,000" }
 ];
 
 const automations = [
