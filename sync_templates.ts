@@ -6,15 +6,20 @@ dotenv.config();
 const prisma = new PrismaClient();
 
 async function syncTemplates() {
-  const WABA_ID = process.env.WHATSAPP_BUSINESS_ACCOUNT_ID || process.env.WABA_ID;
-  const TOKEN = process.env.META_API_TOKEN || process.env.WHATSAPP_TOKEN;
-
-  if (!WABA_ID || !TOKEN) {
-    console.error("Missing WABA_ID or META_API_TOKEN in .env");
-    process.exit(1);
-  }
-
   try {
+    let workspace = await prisma.workspace.findFirst();
+    if (!workspace) {
+      workspace = await prisma.workspace.create({ data: { name: 'Avani Loan Services Default' }});
+    }
+
+    const WABA_ID = workspace.whatsappBusinessAccountId || process.env.WHATSAPP_BUSINESS_ACCOUNT_ID || process.env.WABA_ID;
+    const TOKEN = workspace.whatsappToken || process.env.META_API_TOKEN || process.env.WHATSAPP_TOKEN;
+
+    if (!WABA_ID || !TOKEN) {
+      console.error("Missing WABA_ID or META_API_TOKEN");
+      process.exit(1);
+    }
+
     console.log(`Fetching templates for WABA_ID: ${WABA_ID}`);
     const response = await fetch(`https://graph.facebook.com/v19.0/${WABA_ID}/message_templates?limit=100`, {
       headers: {
@@ -26,10 +31,7 @@ async function syncTemplates() {
     const templates = data.data;
     console.log(`Found ${templates.length} templates in Meta.`);
 
-    let workspace = await prisma.workspace.findFirst();
-    if (!workspace) {
-      workspace = await prisma.workspace.create({ data: { name: 'Avani Loan Services Default' }});
-    }
+
 
     let added = 0;
     for (const tpl of templates) {

@@ -24,9 +24,12 @@ export class TemplatesService {
   }
 
   async syncFromMeta() {
-    const WABA_ID = process.env.WHATSAPP_BUSINESS_ACCOUNT_ID || process.env.WABA_ID;
-    const TOKEN = process.env.META_API_TOKEN || process.env.WHATSAPP_TOKEN;
-    if (!WABA_ID || !TOKEN) throw new Error("Missing Meta API Credentials in .env");
+    let workspace = await this.prisma.workspace.findFirst();
+    if (!workspace) workspace = await this.prisma.workspace.create({ data: { name: 'Avani Loan Services Default' }});
+
+    const WABA_ID = workspace.whatsappBusinessAccountId || process.env.WHATSAPP_BUSINESS_ACCOUNT_ID || process.env.WABA_ID;
+    const TOKEN = workspace.whatsappToken || process.env.META_API_TOKEN || process.env.WHATSAPP_TOKEN;
+    if (!WABA_ID || !TOKEN) throw new Error("Missing Meta API Credentials");
 
     const response = await fetch(`https://graph.facebook.com/v19.0/${WABA_ID}/message_templates?limit=100`, {
       headers: { Authorization: `Bearer ${TOKEN}` }
@@ -40,8 +43,7 @@ export class TemplatesService {
     const data = await response.json();
     const templates = data.data || [];
 
-    let workspace = await this.prisma.workspace.findFirst();
-    if (!workspace) workspace = await this.prisma.workspace.create({ data: { name: 'Avani Loan Services Default' }});
+
 
     let added = 0;
     for (const tpl of templates) {
