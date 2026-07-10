@@ -18,7 +18,7 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
 
   // Helper to get active backend URL dynamically
-  const API_URL = typeof window !== 'undefined' ? ('https://carlo-reads-numbers-smell.trycloudflare.com/api') : 'https://carlo-reads-numbers-smell.trycloudflare.com/api';
+  const API_URL = typeof window !== 'undefined' ? ('https://avani-crm-backend.onrender.com/api') : 'https://avani-crm-backend.onrender.com/api';
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

@@ -1,6 +1,6 @@
 "use client"
 
-const API_URL = typeof window !== 'undefined' ? ('https://carlo-reads-numbers-smell.trycloudflare.com/api') : 'https://carlo-reads-numbers-smell.trycloudflare.com/api';
+const API_URL = typeof window !== 'undefined' ? ('https://avani-crm-backend.onrender.com/api') : 'https://avani-crm-backend.onrender.com/api';
 import { useState, useEffect } from "react";
 import { Plus, MoreHorizontal } from "lucide-react";
 

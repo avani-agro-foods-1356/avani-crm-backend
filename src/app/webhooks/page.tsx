@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Globe, Trash2, RefreshCw } from "lucide-react";
 
-const API_URL = typeof window !== 'undefined' ? ('https://carlo-reads-numbers-smell.trycloudflare.com/api') : 'https://carlo-reads-numbers-smell.trycloudflare.com/api';
+const API_URL = typeof window !== 'undefined' ? ('https://avani-crm-backend.onrender.com/api') : 'https://avani-crm-backend.onrender.com/api';
 
 export default function WebhooksPage() {
   const [events, setEvents] = useState<any[]>([]);

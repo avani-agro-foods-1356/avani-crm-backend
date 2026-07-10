@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Plus, ClipboardList, Eye, Trash2 } from "lucide-react";
 
-const API_URL = typeof window !== 'undefined' ? ('https://carlo-reads-numbers-smell.trycloudflare.com/api') : 'https://carlo-reads-numbers-smell.trycloudflare.com/api';
+const API_URL = typeof window !== 'undefined' ? ('https://avani-crm-backend.onrender.com/api') : 'https://avani-crm-backend.onrender.com/api';
 
 const preconfiguredForms = [
   {
