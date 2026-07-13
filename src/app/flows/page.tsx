@@ -10,57 +10,49 @@ const API_URL = typeof window !== 'undefined' ? ('https://avani-crm-backend.onre
 const workflowStages = [
   {
     stage: "Stage 1",
-    name: "Lead Captured",
+    name: "Greeting & Welcome",
     icon: Users,
     color: "border-blue-500 text-blue-400 bg-blue-500/10",
-    actions: ["Create CRM Record", "Assign Lead ID", "Send Welcome WhatsApp"],
-    details: "When a customer initiates contact, a lead profile is generated instantly.",
-    message: "Hello {{Name}}\n\nThank you for contacting AVANI LOAN SERVICES.\n\nOur advisor will check your eligibility shortly.\n\nReply YES to continue."
+    actions: ["Send Welcome Message", "Identify Customer", "Initiate AI Chat"],
+    details: "When a customer initiates contact, the AI agent greets them and asks how it can assist.",
+    message: "Hello {{Name}},\n\nThank you for contacting AVANI LOAN SERVICES.\n\nOur AI Assistant will help you with your loan requirements.\n\nHow can we help you today?"
   },
   {
     stage: "Stage 2",
-    name: "Lead Qualification",
+    name: "Loan Requirement",
     icon: Sparkles,
     color: "border-purple-500 text-purple-400 bg-purple-500/10",
-    actions: ["AI Chat Qualification", "Score Lead (Hot/Warm/Cold)", "Extract Requirements"],
-    details: "Gemini AI automatically chats to collect company details, salary, existing loans, and required loan amount.",
-    aiQuestions: ["Current company?", "Salary?", "Existing loans?", "Loan amount required?"]
+    actions: ["Ask for Loan Type", "Extract Loan Categories"],
+    details: "Gemini AI automatically asks what type of loan the customer needs.",
+    aiQuestions: ["What type of loan do you need? (Personal, Business, Doctor, CA, Home, Education)"]
   },
   {
     stage: "Stage 3",
-    name: "Advisor Assignment",
-    icon: Award,
+    name: "Employment Status",
+    icon: Users,
     color: "border-amber-500 text-amber-400 bg-amber-500/10",
-    actions: ["Auto Assign Dept", "Round-Robin Lead Allocation"],
-    details: "Lead is assigned automatically to the Personal Loan Team or relevant product desk.",
-    rule: "Round-Robin Lead distribution algorithm active."
+    actions: ["Check Employment Type", "Determine Salaried or Business"],
+    details: "Based on the loan type, the AI asks about employment status.",
+    aiQuestions: ["Are you salaried or do you have your own business?"]
   },
   {
     stage: "Stage 4",
-    name: "Document Collection",
-    icon: FileText,
+    name: "Salary & Income Check",
+    icon: Award,
     color: "border-emerald-500 text-emerald-400 bg-emerald-500/10",
-    actions: ["Send WhatsApp Doc Request", "Verify PAN / Aadhaar / Slips"],
-    details: "Automated trigger requests KYC files and bank statements over WhatsApp.",
-    docs: ["PAN Card", "Aadhaar Card", "Salary Slips", "Bank Statement"]
+    actions: ["Check Monthly Income", "Extract Financial Data", "Qualify Lead"],
+    details: "The AI agent collects salary and required loan amount details.",
+    aiQuestions: ["What is your take-home salary?", "How much loan amount is required?"]
   },
   {
     stage: "Stage 5",
-    name: "Application Submitted",
-    icon: HelpCircle,
+    name: "Document Checklist",
+    icon: FileText,
     color: "border-cyan-500 text-cyan-400 bg-cyan-500/10",
-    actions: ["Update Status to Processing", "Submit to Bank Portal"],
-    details: "Prisma database updates lead status to UNDER_PROCESS.",
-    status: "Application Processing"
-  },
-  {
-    stage: "Stage 6",
-    name: "Disbursement",
-    icon: CheckCircle,
-    color: "border-rose-500 text-rose-400 bg-rose-500/10",
-    actions: ["Fund Disbursed", "Set Lead Status to Closed"],
-    details: "Funds credited successfully to client's account.",
-    status: "Disbursed"
+    actions: ["Provide Document List", "Send File Upload Links"],
+    details: "Automated trigger requests KYC files based on the employment type and loan category.",
+    docs: ["PAN Card", "Aadhaar Card", "Salary Slips", "Bank Statement"],
+    message: "Here is the list of documents required:\n1. PAN Card\n2. Aadhaar Card\n3. 3 Months Salary Slips\n4. 6 Months Bank Statement"
   }
 ];
 
@@ -113,16 +105,13 @@ export default function FlowsPage() {
       if (activeTestStage === 0) {
         logStep(`[WhatsApp Sent] Welcome greeting sent to ${testLeadName}`);
       } else if (activeTestStage === 1) {
-        logStep(`[Gemini AI] Qualify: Extracted Monthly Income & Loan Amount`);
-        logStep(`[AI Score] Assigned Category: HOT LEAD`);
+        logStep(`[Gemini AI] Asked for Loan Requirement`);
       } else if (activeTestStage === 2) {
-        logStep(`[Auto-Assignment] Routed lead to Personal Loan Desk`);
+        logStep(`[Gemini AI] Checked Employment Status`);
       } else if (activeTestStage === 3) {
-        logStep(`[Document Requested] File upload links sent for Aadhaar & PAN`);
+        logStep(`[Gemini AI] Collected Salary & Income Info`);
       } else if (activeTestStage === 4) {
-        logStep(`[Database Update] Lead status set to Application Processing`);
-      } else if (activeTestStage === 5) {
-        logStep(`[Database Update] Lead status set to Disbursed`);
+        logStep(`[WhatsApp Sent] Document Checklist provided to ${testLeadName}`);
       }
       setActiveTestStage(prev => (prev !== null ? prev + 1 : null));
     }, 2500);

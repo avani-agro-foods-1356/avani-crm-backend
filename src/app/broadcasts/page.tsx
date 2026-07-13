@@ -10,113 +10,7 @@ import {
 
 const API_URL = typeof window !== 'undefined' ? ('https://avani-crm-backend.onrender.com/api') : 'https://avani-crm-backend.onrender.com/api';
 
-const presetBroadcastTemplates = [
-  {
-    id: "custom_meta",
-    name: "Custom Meta Template (6 Variables)",
-    content: "Official Meta Template Payload. Variables will be injected automatically.",
-    variablesCount: 6,
-    variablesDesc: ["Variable 1", "Variable 2", "Variable 3", "Variable 4", "Variable 5", "Variable 6"]
-  },
-  {
-    id: "p1",
-    name: "Personal Loan Inquiry",
-    content: "Hello {{1}},\n\nLooking for a Personal Loan?\n\n✅ Quick Approval\n✅ Competitive Interest Rates\n✅ Minimal Documentation\n✅ Flexible EMI Options\n\nReply \"PL\" to get a free eligibility check.\n\nAVANI LOAN SERVICES\nSachin Shinde",
-    variablesCount: 1,
-    variablesDesc: ["Customer Name"]
-  },
-  {
-    id: "p2",
-    name: "Business Loan Inquiry",
-    content: "Hello {{1}},\n\nNeed funds to grow your business?\n\n✅ Business Loans\n✅ Working Capital\n✅ Expansion Funding\n✅ Fast Processing\n\nReply \"BL\" for a free consultation.\n\nAVANI LOAN SERVICES\nSachin Shinde",
-    variablesCount: 1,
-    variablesDesc: ["Customer Name"]
-  },
-  {
-    id: "p3",
-    name: "Doctor Loan Inquiry",
-    content: "Hello Dr. {{1}},\n\nSpecial financing solutions for doctors and healthcare professionals.\n\n✅ Clinic Setup\n✅ Equipment Purchase\n✅ Working Capital\n✅ Expansion Funding\n\nReply \"DOCTOR\" for details.\n\nAVANI LOAN SERVICES\nSachin Shinde",
-    variablesCount: 1,
-    variablesDesc: ["Doctor Name"]
-  },
-  {
-    id: "p4",
-    name: "Home Loan Inquiry",
-    content: "Hello {{1}},\n\nPlanning to buy your dream home?\n\n✅ Home Loan Assistance\n✅ Attractive Interest Rates\n✅ Balance Transfer Options\n✅ Expert Guidance\n\nReply HOME for a free consultation.\n\nAVANI LOAN SERVICES\nSachin Shinde",
-    variablesCount: 1,
-    variablesDesc: ["Customer Name"]
-  },
-  {
-    id: "p5",
-    name: "Mortgage Loan Inquiry",
-    content: "Hello {{1}},\n\nNeed funds against your property?\n\n✅ Mortgage Loans\n✅ Higher Loan Amounts\n✅ Flexible Repayment Options\n✅ Quick Processing\n\nReply MORTGAGE for details.\n\nAVANI LOAN SERVICES\nSachin Shinde",
-    variablesCount: 1,
-    variablesDesc: ["Customer Name"]
-  },
-  {
-    id: "p6",
-    name: "Education Loan India",
-    content: "Hello {{1}},\n\nPlanning higher education in India?\n\n✅ Education Loans\n✅ Competitive Interest Rates\n✅ Fast Processing\n✅ Expert Support\n\nReply INDIA for details.\n\nAVANI LOAN SERVICES\nSachin Shinde",
-    variablesCount: 1,
-    variablesDesc: ["Student Name"]
-  },
-  {
-    id: "p7",
-    name: "Education Loan Abroad",
-    content: "Hello {{1}},\n\nPlanning to study abroad?\n\n✅ Education Loans for Global Studies\n✅ Higher Loan Limits\n✅ Collateral & Non-Collateral Options\n✅ Expert Guidance\n\nReply ABROAD for details.\n\nAVANI LOAN SERVICES\nSachin Shinde",
-    variablesCount: 1,
-    variablesDesc: ["Student Name"]
-  },
-  {
-    id: "p8",
-    name: "School Funding",
-    content: "Hello {{1}},\n\nLooking for funding solutions for your school?\n\n✅ Infrastructure Funding\n✅ Working Capital\n✅ Expansion Support\n✅ Customized Financial Solutions\n\nReply SCHOOL for details.\n\nAVANI LOAN SERVICES\nSachin Shinde",
-    variablesCount: 1,
-    variablesDesc: ["Authority Name"]
-  },
-  {
-    id: "p9",
-    name: "College Funding",
-    content: "Hello {{1}},\n\nNeed funding support for your college or educational institution?\n\n✅ Infrastructure Finance\n✅ Working Capital\n✅ Expansion Funding\n\nReply COLLEGE for details.\n\nAVANI LOAN SERVICES\nSachin Shinde",
-    variablesCount: 1,
-    variablesDesc: ["Authority Name"]
-  },
-  {
-    id: "p10",
-    name: "Lead Follow-up",
-    content: "Hello {{1}},\n\nThank you for showing interest in our loan services.\n\nOur loan advisor is ready to assist you.\n\nPlease reply with your requirement or preferred call time.\n\nAVANI LOAN SERVICES\nSachin Shinde",
-    variablesCount: 1,
-    variablesDesc: ["Customer Name"]
-  },
-  {
-    id: "p11",
-    name: "EMI Reminder",
-    content: "Hello {{1}},\n\nThis is a friendly reminder regarding your upcoming EMI payment.\n\nPlease ensure timely payment to avoid penalties.\n\nFor assistance, reply to this message.\n\nAVANI LOAN SERVICES\nSachin Shinde",
-    variablesCount: 1,
-    variablesDesc: ["Customer Name"]
-  },
-  {
-    id: "p12",
-    name: "Document Request",
-    content: "Hello {{1}},\n\nTo proceed with your loan application, kindly share the required documents.\n\nOur team will review and guide you through the next steps.\n\nThank you.\n\nAVANI LOAN SERVICES\nSachin Shinde",
-    variablesCount: 1,
-    variablesDesc: ["Customer Name"]
-  },
-  {
-    id: "p13",
-    name: "Loan Status Update",
-    content: "Hello {{1}},\n\nYour loan application status has been updated.\n\nOur team will contact you shortly with further details.\n\nThank you for choosing AVANI LOAN SERVICES.\n\nSachin Shinde",
-    variablesCount: 1,
-    variablesDesc: ["Customer Name"]
-  },
-  {
-    id: "p14",
-    name: "CIBIL Improvement",
-    content: "Hello {{1}},\n\nWant to improve your CIBIL Score?\n\n✅ Credit Profile Analysis\n✅ Expert Guidance\n✅ Score Improvement Strategies\n✅ Loan Eligibility Support\n\nReply CIBIL for a free consultation.\n\nAVANI LOAN SERVICES\nSachin Shinde",
-    variablesCount: 1,
-    variablesDesc: ["Customer Name"]
-  }
-];
+// Preset templates removed - loading dynamically from database only
 
 export default function BroadcastPage() {
   const router = useRouter();
@@ -127,7 +21,7 @@ export default function BroadcastPage() {
   
   // Wizard States
   const [broadcastName, setBroadcastName] = useState("");
-  const [selectedTemplate, setSelectedTemplate] = useState<any>(presetBroadcastTemplates[0]);
+  const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
   const [csvFileText, setCsvFileText] = useState("");
   const [csvFileName, setCsvFileName] = useState("");
   const [csvHeaders, setCsvHeaders] = useState<string[]>([]);
@@ -141,6 +35,10 @@ export default function BroadcastPage() {
   // Mapping States
   const [recipientColumn, setRecipientColumn] = useState("");
   const [variableMappings, setVariableMappings] = useState<Record<string, string>>({ "{{1}}": "" });
+  
+  // Scheduling States
+  const [isScheduled, setIsScheduled] = useState(false);
+  const [scheduledAt, setScheduledAt] = useState("");
   
   // Database Templates
   const [dbTemplates, setDbTemplates] = useState<any[]>([]);
@@ -171,10 +69,11 @@ export default function BroadcastPage() {
       const res = await fetch(`${API_URL}/templates`);
       if (res.ok) {
         const data = await res.json();
-        const merged: any[] = [...presetBroadcastTemplates];
-        const names = new Set(merged.map(t => t.name));
+        const merged: any[] = [];
+        const names = new Set();
         for (const t of data) {
           if (!names.has(t.name)) {
+            names.add(t.name);
             // Give them a variablesCount based on how many {{x}} are in content
             const matches = t.content.match(/{{(\d+)}}/g);
             let maxVar = 0;
@@ -198,11 +97,11 @@ export default function BroadcastPage() {
         setDbTemplates(merged);
         if (merged.length > 0) setSelectedTemplate(merged[0]);
       } else {
-        setDbTemplates(presetBroadcastTemplates);
+        setDbTemplates([]);
       }
     } catch (e) {
       console.error("Failed to fetch templates", e);
-      setDbTemplates(presetBroadcastTemplates);
+      setDbTemplates([]);
     }
   };
 
@@ -296,7 +195,57 @@ export default function BroadcastPage() {
       return;
     }
     
+    if (isScheduled && !scheduledAt) {
+      alert("Please select a valid date and time for the scheduled broadcast.");
+      return;
+    }
+
+    if (!selectedTemplate) {
+      alert("Please select a template first.");
+      return;
+    }
+
     setIsSending(true);
+
+    if (isScheduled) {
+      // Schedule the broadcast by sending the full payload to the backend
+      try {
+        const res = await fetch(`${API_URL}/campaigns`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: broadcastName || `${selectedTemplate.name} Scheduled Broadcast`,
+            templateId: selectedTemplate.id,
+            status: "SCHEDULED",
+            type: "WHATSAPP",
+            scheduledAt: new Date(scheduledAt).toISOString(),
+            payload: {
+              csvRows,
+              recipientColumn,
+              variableMappings,
+              mediaType: mediaType === "text" ? "template" : mediaType,
+              mediaUrl: mediaType === "text" ? selectedTemplate.name : mediaUrl,
+              templateContent: selectedTemplate.content
+            }
+          })
+        });
+        
+        if (res.ok) {
+          alert(`Broadcast scheduled successfully for ${new Date(scheduledAt).toLocaleString()}`);
+          fetchCampaigns();
+          setShowWizard(false);
+          router.push("/");
+        } else {
+          alert("Failed to schedule broadcast.");
+        }
+      } catch (err: any) {
+        console.error(err);
+        alert("Connection error while scheduling broadcast.");
+      }
+      setIsSending(false);
+      return;
+    }
+    
     setSendProgress(0);
     setSendStats({ success: 0, failed: 0, total: csvRows.length });
     setSendLogs([]);
@@ -328,6 +277,11 @@ export default function BroadcastPage() {
       });
       const templateParams = paramKeys.map(key => String(row[variableMappings[key]] || ""));
       
+      // ALWAYS force mediaType to "template" if the user was on "text" mode to use the DB template.
+      // And force mediaUrl to the template name.
+      const finalMediaType = mediaType === "text" ? "template" : mediaType;
+      const finalMediaUrl = mediaType === "text" ? selectedTemplate.name : mediaUrl;
+
       try {
         const res = await fetch(`${API_URL}/contacts/direct-message`, {
           method: "POST",
@@ -335,9 +289,9 @@ export default function BroadcastPage() {
           body: JSON.stringify({
             phone,
             message: compiledMessage,
-            mediaType: mediaType !== "text" ? mediaType : undefined,
-            mediaUrl: mediaType !== "text" ? mediaUrl : undefined,
-            templateParams: mediaType === "template" ? templateParams : undefined
+            mediaType: finalMediaType,
+            mediaUrl: finalMediaUrl,
+            templateParams: finalMediaType === "template" ? templateParams : undefined
           })
         });
         
@@ -385,6 +339,7 @@ export default function BroadcastPage() {
         body: JSON.stringify({
           name: broadcastName || `${selectedTemplate.name} Broadcast`,
           templateId: selectedTemplate.id,
+          type: "WHATSAPP",
           status: "COMPLETED"
         })
       });
@@ -582,7 +537,7 @@ export default function BroadcastPage() {
                       <p className="text-xs text-zinc-400 mb-3">Attach an image, video, document, or send an Official Meta Template.</p>
                       
                       <div className="grid grid-cols-5 gap-2 mb-3">
-                        {(["text", "image", "video", "document", "template"] as const).map((type) => (
+                        {(["text", "image", "video", "document"] as const).map((type) => (
                           <button
                             key={type}
                             type="button"
@@ -596,7 +551,7 @@ export default function BroadcastPage() {
                                 : "border-zinc-800 bg-zinc-950 text-zinc-400 hover:bg-zinc-800"
                             }`}
                           >
-                            {type === "text" ? "Text Only" : type === "template" ? "Meta Template" : type}
+                            {type === "text" ? "No Attachment" : type}
                           </button>
                         ))}
                       </div>
@@ -662,7 +617,7 @@ export default function BroadcastPage() {
                           
                           <div className="flex flex-col gap-1">
                             <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">
-                              {mediaType === 'template' ? 'Enter Exact Meta Template Name' : 'Or Paste Media URL'}
+                              Paste Media URL
                             </span>
                             <input 
                               type="text"
@@ -767,7 +722,7 @@ export default function BroadcastPage() {
                       </div>
 
                       {/* Dynamic mapping loop */}
-                      {Array.from({ length: selectedTemplate.variablesCount }).map((_, idx) => {
+                      {selectedTemplate && Array.from({ length: selectedTemplate.variablesCount }).map((_, idx) => {
                         const variableName = `{{${idx + 1}}}`;
                         const desc = selectedTemplate.variablesDesc[idx] || `Variable ${idx + 1}`;
                         return (
@@ -820,9 +775,48 @@ export default function BroadcastPage() {
                           <span className="font-semibold">Total Recipients:</span>
                           <span className="text-zinc-200 font-bold">{csvRows.length} contacts</span>
                         </div>
-                        <div className="flex justify-between pb-1">
+                        <div className="flex justify-between border-b border-zinc-800/80 pb-2">
                           <span className="font-semibold">Meta Verification Status:</span>
-                          <span className="text-emerald-400 font-bold">Meta Approved Templates (Instant dispatch)</span>
+                          <span className="text-emerald-400 font-bold">Meta Approved Templates</span>
+                        </div>
+                        
+                        {/* Scheduling Toggle */}
+                        <div className="pt-2 flex flex-col gap-3">
+                          <div className="flex items-center gap-3">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input 
+                                type="radio" 
+                                name="dispatchTime"
+                                checked={!isScheduled}
+                                onChange={() => setIsScheduled(false)}
+                                className="accent-emerald-500 w-4 h-4"
+                              />
+                              <span className="text-zinc-200 font-bold">Send Now</span>
+                            </label>
+                            
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input 
+                                type="radio" 
+                                name="dispatchTime"
+                                checked={isScheduled}
+                                onChange={() => setIsScheduled(true)}
+                                className="accent-emerald-500 w-4 h-4"
+                              />
+                              <span className="text-zinc-200 font-bold">Schedule for Later</span>
+                            </label>
+                          </div>
+                          
+                          {isScheduled && (
+                            <div className="bg-zinc-900 border border-zinc-800 p-3 rounded-lg flex items-center gap-3 animate-fade-in">
+                              <Calendar className="w-5 h-5 text-emerald-500" />
+                              <input 
+                                type="datetime-local" 
+                                value={scheduledAt}
+                                onChange={(e) => setScheduledAt(e.target.value)}
+                                className="bg-zinc-950 border border-zinc-800 text-zinc-200 rounded px-3 py-1.5 focus:outline-none focus:border-emerald-500 flex-1 text-xs"
+                              />
+                            </div>
+                          )}
                         </div>
                       </div>
                     ) : (
@@ -910,8 +904,8 @@ export default function BroadcastPage() {
                       onClick={handleSendNow}
                       className="flex items-center gap-1.5 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-sm font-bold shadow-lg shadow-emerald-600/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <Play className="w-4 h-4 fill-white" />
-                      Send Now
+                      {isScheduled ? <Calendar className="w-4 h-4" /> : <Play className="w-4 h-4 fill-white" />}
+                      {isScheduled ? "Schedule Broadcast" : "Send Now"}
                     </button>
                   )}
                 </div>
