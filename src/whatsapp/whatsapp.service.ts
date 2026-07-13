@@ -162,11 +162,9 @@ export class WhatsappService {
         filename: mediaUrl.substring(mediaUrl.lastIndexOf('/') + 1) || 'document.pdf'
       };
     } else if (type === 'template' && mediaUrl) {
-      // If the template name has spaces or uppercase letters, it is a frontend dummy template.
-      // Meta only accepts lowercase and underscores. We safely fallback to sending it as a regular text message.
+      // Meta only accepts lowercase and underscores for template names.
       if (/[A-Z ]/.test(mediaUrl)) {
-        payload.type = 'text';
-        payload.text = { body: text };
+        throw new Error(`Invalid Meta Template Name: "${mediaUrl}". Template names must be lowercase and use underscores (e.g., "business_loan_inquiry"). Please refresh your browser to load the latest templates from the database.`);
       } else {
         payload.type = 'template';
         payload.template = {

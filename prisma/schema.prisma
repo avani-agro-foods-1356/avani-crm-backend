@@ -125,8 +125,10 @@ model Campaign {
   id          String     @id @default(uuid())
   name        String
   templateId  String
+  type        String     @default("WHATSAPP") // WHATSAPP, VOICE
   status      CampStatus @default(DRAFT)
   scheduledAt DateTime?
+  payload     Json?      // Stores CSV contacts and mapping configs for scheduled runs
   workspaceId String
   workspace   Workspace  @relation(fields: [workspaceId], references: [id])
   createdAt   DateTime   @default(now())
@@ -138,6 +140,7 @@ enum CampStatus {
   RUNNING
   COMPLETED
   PAUSED
+  FAILED
 }
 
 model Tag {

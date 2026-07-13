@@ -23,9 +23,13 @@ import { DevelopersModule } from './developers/developers.module';
 
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { BlandModule } from './bland/bland.module';
+
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
       serveStaticOptions: { extensions: ['html'] },
@@ -48,7 +52,8 @@ import { join } from 'path';
     FlowsModule,
     SettingsModule,
     KnowledgeModule,
-    DevelopersModule
+    DevelopersModule,
+    BlandModule
   ],
   controllers: [AppController],
   providers: [AppService],
