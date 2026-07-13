@@ -15,22 +15,16 @@ export class WhatsappService {
   ) {}
 
   private async getCredentials() {
+    let workspace;
     try {
-      const workspace = await this.prisma.workspace.findFirst();
-      if (workspace) {
-        return {
-          whatsappToken: workspace.whatsappToken || process.env.WHATSAPP_TOKEN,
-          whatsappPhoneNumberId: workspace.whatsappPhoneNumberId || process.env.WHATSAPP_PHONE_NUMBER_ID,
-          geminiApiKey: workspace.geminiApiKey || process.env.GEMINI_API_KEY,
-        };
-      }
+      workspace = await this.prisma.workspace.findFirst();
     } catch (e) {
       this.logger.error('Failed to read settings from database, falling back to env', e);
     }
     return {
-      whatsappToken: process.env.WHATSAPP_TOKEN,
-      whatsappPhoneNumberId: process.env.WHATSAPP_PHONE_NUMBER_ID,
-      geminiApiKey: process.env.GEMINI_API_KEY,
+      whatsappToken: workspace?.whatsappToken || process.env.WHATSAPP_TOKEN,
+      whatsappPhoneNumberId: workspace?.whatsappPhoneId || process.env.WHATSAPP_PHONE_NUMBER_ID,
+      geminiApiKey: workspace?.geminiApiKey || process.env.GEMINI_API_KEY,
     };
   }
 
@@ -236,7 +230,7 @@ export class WhatsappService {
         this.logger.log(`Message (${type}) successfully sent to ${to}`);
         return data;
       }
-    } catch (error) {
+    } catch (error: any) {
       const isPlaceholder = 
         !token || 
         token.includes('YOUR_') || 

@@ -65,23 +65,25 @@ export class BlandService {
           // Add contact and log message first
           let contact = await this.prisma.contact.findUnique({ where: { phone } });
           if (!contact) {
+            const ws = await this.prisma.workspace.findFirst();
             contact = await this.prisma.contact.create({
               data: {
                 phone,
                 name,
-                source: 'BLAND_AI'
+                source: 'BLAND_AI',
+                workspace: { connect: { id: ws?.id } }
               }
             });
           }
 
-          // Send Meta approved template 'loan_consultation_offer'
+          // Send Meta approved template 'clinic_setup__expansion'
           await this.whatsappService.sendMessage(
             phone,
             `Hello ${name}, this is our loan consultation offer...`, // Fallback text if template fails (e.g. dummy environment)
             'template',
-            'loan_consultation_offer',
-            undefined, // No document URL
-            [{ type: 'text', text: name }]
+            'clinic_setup__expansion',
+            undefined, // No phoneNumberId
+            [name]
           );
 
           // Save message to DB
@@ -90,7 +92,7 @@ export class BlandService {
               contactId: contact.id,
               direction: 'OUTBOUND',
               type: 'TEMPLATE',
-              content: `[Template Sent: loan_consultation_offer]\nSent after Bland AI call finished.`,
+              content: `[Template Sent: clinic_setup__expansion]\nSent after Bland AI call finished.`,
               status: 'SENT'
             }
           });
