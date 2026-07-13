@@ -11,16 +11,16 @@ async function bootstrap() {
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
   
-  // Automatically start Cloudflare Tunnel in background for stable connection
-  console.log('Starting Cloudflare Tunnel for WhatsApp Webhooks and API...');
-  const tunnelProcess = exec('cloudflared tunnel --url http://localhost:4000');
+  // Automatically start localtunnel in background for stable connection
+  console.log('Starting Localtunnel for WhatsApp Webhooks and API...');
+  const tunnelProcess = exec('npx localtunnel --port 4000 --subdomain avaniloanservices');
   
   tunnelProcess.stdout?.on('data', (data) => {
-    console.log(`[cloudflared] ${data.trim()}`);
+    console.log(`[localtunnel] ${data.trim()}`);
   });
   
   tunnelProcess.stderr?.on('data', (data) => {
-    console.error(`[cloudflared err] ${data.trim()}`);
+    console.error(`[localtunnel err] ${data.trim()}`);
   });
 }
 bootstrap();

@@ -76,14 +76,14 @@ export class BlandService {
             });
           }
 
-          // Send Meta approved template 'clinic_setup__expansion'
+          // Send Meta approved template 'loan_consultation_offer'
           await this.whatsappService.sendMessage(
             phone,
             `Hello ${name}, this is our loan consultation offer...`, // Fallback text if template fails (e.g. dummy environment)
             'template',
-            'clinic_setup__expansion',
+            'loan_consultation_offer',
             undefined, // No phoneNumberId
-            [name]
+            [name] // Pass name as parameter
           );
 
           // Save message to DB
@@ -92,7 +92,7 @@ export class BlandService {
               contactId: contact.id,
               direction: 'OUTBOUND',
               type: 'TEMPLATE',
-              content: `[Template Sent: clinic_setup__expansion]\nSent after Bland AI call finished.`,
+              content: `[Template Sent: loan_consultation_offer]\nSent after Bland AI call finished.`,
               status: 'SENT'
             }
           });

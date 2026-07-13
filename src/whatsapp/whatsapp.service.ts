@@ -23,7 +23,7 @@ export class WhatsappService {
     }
     return {
       whatsappToken: workspace?.whatsappToken || process.env.WHATSAPP_TOKEN,
-      whatsappPhoneNumberId: workspace?.whatsappPhoneId || process.env.WHATSAPP_PHONE_NUMBER_ID,
+      whatsappPhoneNumberId: workspace?.whatsappPhoneNumberId || process.env.WHATSAPP_PHONE_NUMBER_ID,
       geminiApiKey: workspace?.geminiApiKey || process.env.GEMINI_API_KEY,
     };
   }
@@ -163,7 +163,7 @@ export class WhatsappService {
         payload.type = 'template';
         payload.template = {
           name: mediaUrl,
-          language: { code: 'en_US' } // default to en_US for Meta templates
+          language: { code: 'en' }
         };
       }
       
@@ -203,6 +203,9 @@ export class WhatsappService {
         const errType = data?.error?.type || '';
         const errSubcode = data?.error?.error_subcode;
 
+        this.logger.error(`[META API ERROR] code=${errCode} subcode=${errSubcode} type=${errType} message=${errMsg}`);
+        this.logger.error(`[META API ERROR] Full response: ${JSON.stringify(data)}`);
+
         // Detect expired/invalid token specifically
         if (errCode === 190 || errType === 'OAuthException') {
           this.logger.error(`[META TOKEN EXPIRED] ❌ Your WhatsApp Access Token has EXPIRED or is INVALID!`);
@@ -210,9 +213,6 @@ export class WhatsappService {
           this.logger.error(`[META TOKEN EXPIRED] Then update the token in the CRM Settings page: https://frontend-liart-gamma-68.vercel.app/settings`);
           throw new Error('Authentication Error: WhatsApp token expired. Please generate a new permanent token from Meta Business Manager.');
         }
-
-        this.logger.error(`[META API ERROR] code=${errCode} subcode=${errSubcode} type=${errType} message=${errMsg}`);
-        this.logger.error(`[META API ERROR] Full response: ${JSON.stringify(data)}`);
         
         const isPlaceholder = 
           !token || 
