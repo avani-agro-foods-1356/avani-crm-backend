@@ -5,7 +5,7 @@ import {
   MessageSquare, FileText, Sparkles, Send, Award, HelpCircle
 } from "lucide-react";
 
-const API_URL = typeof window !== 'undefined' ? ('https://avani-crm-backend.onrender.com/api') : 'https://avani-crm-backend.onrender.com/api';
+const API_URL = typeof window !== 'undefined' ? ('https://avani-ai-crm.vercel.app/api') : 'https://avani-ai-crm.vercel.app/api';
 
 const workflowStages = [
   {

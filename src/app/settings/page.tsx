@@ -18,7 +18,7 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
 
   // Helper to get active backend URL dynamically
-  const API_URL = typeof window !== 'undefined' ? ('https://avani-crm-backend.onrender.com/api') : 'https://avani-crm-backend.onrender.com/api';
+  const API_URL = typeof window !== 'undefined' ? ('https://avani-ai-crm.vercel.app/api') : 'https://avani-ai-crm.vercel.app/api';
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -57,7 +57,10 @@ export default function SettingsPage() {
         }
       }
       
-      const activeUrl = trimmedUrl || API_URL;
+      let activeUrl = trimmedUrl || API_URL;
+      if (!activeUrl.endsWith('/api')) {
+        activeUrl += '/api';
+      }
       const res = await fetch(`${activeUrl}/settings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

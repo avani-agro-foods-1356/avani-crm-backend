@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Image as ImageIcon, UploadCloud, Trash2, FileText, Download } from "lucide-react";
 
-const API_URL = typeof window !== 'undefined' ? ('https://avani-crm-backend.onrender.com/api') : 'https://avani-crm-backend.onrender.com/api';
+const API_URL = typeof window !== 'undefined' ? ('https://avani-ai-crm.vercel.app/api') : 'https://avani-ai-crm.vercel.app/api';
 
 export default function GalleryPage() {
   const [files, setFiles] = useState<any[]>([]);
