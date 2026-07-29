@@ -9,10 +9,10 @@ export default function SettingsPage() {
   const [autoReply, setAutoReply] = useState(true);
   
   // Meta and Gemini credentials state
-  const [whatsappToken, setWhatsappToken] = useState("");
-  const [whatsappPhoneNumberId, setWhatsappPhoneNumberId] = useState("");
-  const [geminiApiKey, setGeminiApiKey] = useState("");
-  const [backendApiUrl, setBackendApiUrl] = useState("");
+  const [whatsappToken, setWhatsappToken] = useState("EAAdIUij5eSEBSGriZCTt06QY1yLIkPZCDIQmHY2iE1ZAGiO7plPIiHyV1VnoXIvbvQeFfyhFM0IwWKIxlj0y5haUYPbYIBQMabyJ9XJhTUZA2vUEUYDbSnJH4OIsFYiLTD8yPBFH331fwmBU253NwW48xWhytfkb2gn8E52jZAElt6PcnGL0YZChBtExZCj2AZDZD");
+  const [whatsappPhoneNumberId, setWhatsappPhoneNumberId] = useState("1234724199716806");
+  const [geminiApiKey, setGeminiApiKey] = useState("AIzaSyAzz0LUgUt9DxicUZQmkoZv3zRh_EdWMlU");
+  const [backendApiUrl, setBackendApiUrl] = useState("https://avani-ai-crm.vercel.app/api");
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
