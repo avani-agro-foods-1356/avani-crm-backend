@@ -10,7 +10,7 @@ export default function SettingsPage() {
   
   // Meta and Gemini credentials state
   const [whatsappToken, setWhatsappToken] = useState("EAAdIUij5eSEBSGriZCTt06QY1yLIkPZCDIQmHY2iE1ZAGiO7plPIiHyV1VnoXIvbvQeFfyhFM0IwWKIxlj0y5haUYPbYIBQMabyJ9XJhTUZA2vUEUYDbSnJH4OIsFYiLTD8yPBFH331fwmBU253NwW48xWhytfkb2gn8E52jZAElt6PcnGL0YZChBtExZCj2AZDZD");
-  const [whatsappPhoneNumberId, setWhatsappPhoneNumberId] = useState("1234724199716806");
+  const [whatsappPhoneNumberId, setWhatsappPhoneNumberId] = useState("1147494668457940");
   const [geminiApiKey, setGeminiApiKey] = useState("AIzaSyAzz0LUgUt9DxicUZQmkoZv3zRh_EdWMlU");
   const [backendApiUrl, setBackendApiUrl] = useState("https://avani-ai-crm.vercel.app/api");
   
@@ -21,20 +21,19 @@ export default function SettingsPage() {
   const API_URL = typeof window !== 'undefined' ? ('https://avani-ai-crm.vercel.app/api') : 'https://avani-ai-crm.vercel.app/api';
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setBackendApiUrl("");
-    }
+    setBackendApiUrl("https://avani-ai-crm.vercel.app/api");
     fetch(`${API_URL}/settings`)
       .then(res => res.json())
       .then(data => {
         if (data && data[0]) {
-          setName(data[0].name || "");
-          setTimezone(data[0].timezone || "IST");
-          setCurrency(data[0].currency || "INR");
+          if (data[0].name) setName(data[0].name);
+          if (data[0].timezone) setTimezone(data[0].timezone);
+          if (data[0].currency) setCurrency(data[0].currency);
           setAutoReply(data[0].autoReply !== false);
-          setWhatsappToken(data[0].whatsappToken || "");
-          setWhatsappPhoneNumberId(data[0].whatsappPhoneNumberId || "");
-          setGeminiApiKey(data[0].geminiApiKey || "");
+          if (data[0].whatsappToken) setWhatsappToken(data[0].whatsappToken);
+          if (data[0].whatsappPhoneNumberId) setWhatsappPhoneNumberId(data[0].whatsappPhoneNumberId);
+          if (data[0].geminiApiKey) setGeminiApiKey(data[0].geminiApiKey);
+          if (data[0].backendApiUrl) setBackendApiUrl(data[0].backendApiUrl);
         }
         setLoading(false);
       })
