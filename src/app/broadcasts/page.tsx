@@ -55,10 +55,13 @@ export default function BroadcastPage() {
       const res = await fetch(`${API_URL}/campaigns`);
       if (res.ok) {
         const data = await res.json();
-        setCampaigns(data);
+        setCampaigns(Array.isArray(data) ? data : (data.campaigns || []));
+      } else {
+        setCampaigns([]);
       }
     } catch (e) {
       console.error("Failed to fetch campaigns", e);
+      setCampaigns([]);
     } finally {
       setLoading(false);
     }
