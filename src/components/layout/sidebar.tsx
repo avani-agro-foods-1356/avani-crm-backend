@@ -6,33 +6,60 @@ import {
   FileText, ClipboardList, Tag, Columns, Settings2, Globe, 
   Image as ImageIcon, HelpCircle, MessageSquare, Bot, GitMerge, 
   Folder, CheckCircle, Settings, Book, Code, Phone, Users, Smartphone,
-  Megaphone
+  Megaphone, Calendar
 } from 'lucide-react';
 
 export function Sidebar({ className = "" }: { className?: string }) {
   const pathname = usePathname();
   
-  const menuItems = [
-    { name: "Contacts", icon: Users, href: "/contacts" },
-    { name: "Broadcasts", icon: Megaphone, href: "/broadcasts" },
-    { name: "Whatsapp Templates", icon: FileText, href: "/templates" },
-    { name: "Whatsapp Forms", icon: ClipboardList, href: "/forms" },
-    { name: "Conversational Components", icon: Smartphone, href: "/conversational-components" },
-    { name: "Tags", icon: Tag, href: "/tags" },
-    { name: "Columns", icon: Columns, href: "/columns" },
-    { name: "Opts Management", icon: Settings2, href: "/opts" },
-    { name: "Webhook Events", icon: Globe, href: "/webhooks" },
-    { name: "Gallery", icon: ImageIcon, href: "/gallery" },
-    { name: "FAQ Bot", icon: HelpCircle, href: "/faq" },
-    { name: "Chatbot", icon: MessageSquare, href: "https://avani-loan-agents.onrender.com/dashboard" }, 
-    { name: "Ai assistant", icon: Bot, href: "/assistant" },
-    { name: "Flows", icon: GitMerge, href: "/flows" },
-    { name: "Projects", icon: Folder, href: "/projects" },
-    { name: "Tasks", icon: CheckCircle, href: "/tasks" },
-    { name: "Settings", icon: Settings, href: "/settings" },
-    { name: "Knowledge Base", icon: Book, href: "/knowledge" },
-    { name: "Developers", icon: Code, href: "/developers" },
-    { name: "Operations Guide", icon: Book, href: "/guide" },
+  const menuGroups = [
+    {
+      title: "MAIN",
+      items: [
+        { name: "Contacts", icon: Users, href: "/contacts" },
+        { name: "Inbox", icon: MessageSquare, href: "/inbox" },
+        { name: "Broadcasts", icon: Megaphone, href: "/broadcasts" },
+        { name: "Schedule", icon: Calendar, href: "/schedule" },
+      ]
+    },
+    {
+      title: "WHATSAPP",
+      items: [
+        { name: "Whatsapp Templates", icon: FileText, href: "/templates" },
+        { name: "Whatsapp Forms", icon: ClipboardList, href: "/forms" },
+        { name: "Conversational Components", icon: Smartphone, href: "/conversational-components" },
+      ]
+    },
+    {
+      title: "MANAGEMENT",
+      items: [
+        { name: "Tags", icon: Tag, href: "/tags" },
+        { name: "Columns", icon: Columns, href: "/columns" },
+        { name: "Opts Management", icon: Settings2, href: "/opts" },
+      ]
+    },
+    {
+      title: "TOOLS",
+      items: [
+        { name: "Webhook Events", icon: Globe, href: "/webhooks" },
+        { name: "Gallery", icon: ImageIcon, href: "/gallery" },
+        { name: "FAQ Bot", icon: HelpCircle, href: "/faq" },
+        { name: "Chatbot", icon: MessageSquare, href: "https://avani-loan-agents.onrender.com/dashboard", external: true },
+        { name: "Ai assistant", icon: Bot, href: "/assistant" },
+        { name: "Flows", icon: GitMerge, href: "/flows" },
+      ]
+    },
+    {
+      title: "WORKSPACE",
+      items: [
+        { name: "Projects", icon: Folder, href: "/projects" },
+        { name: "Tasks", icon: CheckCircle, href: "/tasks" },
+        { name: "Settings", icon: Settings, href: "/settings" },
+        { name: "Knowledge Base", icon: Book, href: "/knowledge" },
+        { name: "Developers", icon: Code, href: "/developers" },
+        { name: "Operations Guide", icon: Book, href: "/guide" },
+      ]
+    }
   ];
 
   return (
@@ -42,23 +69,32 @@ export function Sidebar({ className = "" }: { className?: string }) {
         </div>
       <div className="flex-1 py-4 overflow-y-auto custom-scrollbar">
         <nav className="flex flex-col gap-1 px-3">
-          {menuItems.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <Link 
-                key={item.name}
-                href={item.href} 
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
-                  isActive 
-                    ? 'bg-primary text-primary-foreground font-medium' 
-                    : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-50'
-                }`}
-              >
-                <item.icon className={`h-4 w-4 ${isActive ? 'text-primary-foreground' : 'text-zinc-500'}`} />
-                {item.name}
-              </Link>
-            )
-          })}
+          {menuGroups.map((group, i) => (
+            <div key={i} className="mb-4">
+              <h3 className="px-3 text-xs font-semibold text-zinc-500 mb-2">{group.title}</h3>
+              <div className="flex flex-col gap-1">
+                {group.items.map((item) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <Link 
+                      key={item.name}
+                      href={item.href} 
+                      target={item.external ? "_blank" : undefined}
+                      rel={item.external ? "noopener noreferrer" : undefined}
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
+                        isActive 
+                          ? 'bg-primary text-primary-foreground font-medium' 
+                          : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-50'
+                      }`}
+                    >
+                      <item.icon className={`h-4 w-4 ${isActive ? 'text-primary-foreground' : 'text-zinc-500'}`} />
+                      {item.name}
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
         </nav>
       </div>
       <div className="border-t border-zinc-800 p-4">

@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { 
   Users, Megaphone, FileText, ClipboardList, Smartphone, Tag, Columns, Settings2, 
   Globe, Image as ImageIcon, HelpCircle, MessageSquare, Bot, GitMerge, Folder, CheckCircle,
-  Activity, Phone, Mail, MapPin, ShieldCheck, Briefcase, Award, Search, ArrowRight, ExternalLink
+  Activity, Phone, Mail, MapPin, ShieldCheck, Briefcase, Award, Search, ArrowRight, ExternalLink, Calendar
 } from "lucide-react";
 
 export default function Dashboard() {
@@ -39,6 +39,17 @@ export default function Dashboard() {
       borderColor: "border-emerald-500/20",
       hoverBorder: "hover:border-emerald-500/50",
       category: "Communication"
+    },
+    {
+      name: "Schedule",
+      description: "Calendar view of scheduled broadcasts, tasks, and reminders.",
+      icon: Calendar,
+      href: "/schedule",
+      color: "text-indigo-400",
+      bgColor: "bg-indigo-500/10",
+      borderColor: "border-indigo-500/20",
+      hoverBorder: "hover:border-indigo-500/50",
+      category: "System"
     },
     {
       name: "WhatsApp Templates",
