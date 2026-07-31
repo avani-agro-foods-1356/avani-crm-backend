@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { WhatsappService } from '../whatsapp/whatsapp.service';
+import * as https from 'https';
 
 @Injectable()
 export class ContactsService {
@@ -168,7 +169,58 @@ export class ContactsService {
       console.error(`Failed to send automated Stage 1 greeting to ${contact.phone}`, e);
     }
 
+    // Trigger Integrations (HubSpot, Zapier/Google Sheets)
+    this.syncToIntegrations(contact).catch(e => console.error('Failed to sync integrations', e));
+
     return contact;
+  }
+
+  private async syncToIntegrations(contact: any) {
+    try {
+      // 1. HubSpot Sync via Forms API
+      const portalId = process.env.HUBSPOT_PORTAL_ID || '244236573';
+      const formId = process.env.HUBSPOT_FORM_ID || 'edde042c-3451-420a-a472-6a5c42cbdf98';
+      
+      const nameParts = (contact.name || 'Applicant').trim().split(/\s+/);
+      const firstname = nameParts[0] || 'Applicant';
+      const lastname = nameParts.slice(1).join(' ') || 'Lead';
+      
+      const hsPayload = {
+        submittedAt: Date.now(),
+        fields: [
+          { name: "email", value: "enquiry@avanifinserv.com" },
+          { name: "firstname", value: firstname },
+          { name: "lastname", value: lastname },
+          { name: "phone", value: contact.phone },
+          { name: "message", value: `New Lead via CRM. ID: ${contact.id}, Status: ${contact.status}` }
+        ],
+        context: {
+          pageUri: "https://avani-ai-crm.vercel.app/",
+          pageName: "Avani AI CRM"
+        }
+      };
+      
+      await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(hsPayload),
+      }).catch(e => console.error("HubSpot sync error:", e));
+
+      // 2. Zapier/Make Webhook (Google Sheets Sync)
+      // This webhook URL can be configured to point to Zapier or Make.com
+      const zapierWebhook = process.env.ZAPIER_WEBHOOK_URL || 'https://hooks.zapier.com/hooks/catch/12345/abcde';
+      if (zapierWebhook && !zapierWebhook.includes('12345/abcde')) { // Check if it's a real webhook URL
+        await fetch(zapierWebhook, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(contact),
+        }).catch(e => console.error("Zapier sync error:", e));
+      }
+      
+      console.log(`Synced contact ${contact.phone} to HubSpot and Webhooks.`);
+    } catch (e) {
+      console.error('Integration sync error', e);
+    }
   }
 
   findAll() {

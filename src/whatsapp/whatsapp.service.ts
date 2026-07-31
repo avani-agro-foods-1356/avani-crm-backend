@@ -80,7 +80,7 @@ export class WhatsappService {
         content: m.content
       }));
 
-      const response = await fetch('https://avani-loan-agents.onrender.com/api/chat', {
+      const response = await fetch('https://avani-loan-agents.vercel.app/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: aiMessages })
@@ -227,7 +227,9 @@ export class WhatsappService {
 
         throw new Error(errMsg || 'Failed to send WhatsApp message via Meta API');
       } else {
-        this.logger.log(`Message (${type}) successfully sent to ${to}`);
+        this.logger.log(`Message (${type}) successfully sent to ${to} via Meta.`);
+        // Try Twilio as secondary
+        await this.sendTwilioMessage(to, text, type, mediaUrl).catch(e => this.logger.error('Twilio fallback error', e));
         return data;
       }
     } catch (error: any) {
@@ -239,11 +241,74 @@ export class WhatsappService {
 
       if (isPlaceholder && error.message.includes('fetch failed')) {
         this.logger.warn(`[META API FALLBACK] Catch block: Mocking success for demo. Error: ${error.message}`);
+        await this.sendTwilioMessage(to, text, type, mediaUrl).catch(e => this.logger.error('Twilio fallback error', e));
         return { message_id: `mock_msg_${Date.now()}`, success: true, mocked: true };
       }
 
       this.logger.error(`Error sending message to ${to}: ${error.message}`);
+      // Fallback to Twilio completely
+      this.logger.log(`Falling back to Twilio for ${to}...`);
+      await this.sendTwilioMessage(to, text, type, mediaUrl).catch(e => this.logger.error('Twilio fallback error', e));
+      
       throw error;
+    }
+  }
+
+  private async sendTwilioMessage(to: string, text: string, type: string, mediaUrl?: string) {
+    const accountSid = process.env.TWILIO_ACCOUNT_SID;
+    const authToken = process.env.TWILIO_AUTH_TOKEN;
+    const twilioNumber = process.env.TWILIO_WHATSAPP_NUMBER || '+14155238886';
+
+    if (!accountSid || !authToken) {
+      this.logger.warn("Twilio credentials missing. Skipping Twilio WhatsApp notification.");
+      return;
+    }
+
+    let toPhone = to.trim();
+    if (!toPhone.startsWith('+')) {
+      toPhone = '+' + (toPhone.length === 10 ? '91' + toPhone : toPhone);
+    }
+    const twilioTo = `whatsapp:${toPhone}`;
+    let fromPhone = twilioNumber.trim();
+    if (!fromPhone.startsWith('whatsapp:')) {
+      fromPhone = `whatsapp:${fromPhone.startsWith('+') ? '' : '+'}${fromPhone}`;
+    }
+
+    const params = new URLSearchParams();
+    params.append('To', twilioTo);
+    params.append('From', fromPhone);
+    
+    if (type === 'template' && mediaUrl) {
+      // For templates, we can just send the body for now or ignore since Twilio templates differ
+      params.append('Body', text || 'New message from Avani Loan Services');
+    } else if (type === 'image' || type === 'video' || type === 'document') {
+      params.append('Body', text || '');
+      if (mediaUrl) params.append('MediaUrl', mediaUrl);
+    } else {
+      params.append('Body', text);
+    }
+
+    const authHeader = 'Basic ' + Buffer.from(`${accountSid}:${authToken}`).toString('base64');
+    const endpoint = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Authorization': authHeader,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: params.toString()
+      });
+
+      if (response.ok) {
+        this.logger.log(`Message successfully sent to ${to} via Twilio.`);
+      } else {
+        const errorText = await response.text();
+        this.logger.error(`Twilio API Error: ${errorText}`);
+      }
+    } catch (e) {
+      this.logger.error(`Twilio Network Error: ${e.message}`);
     }
   }
 }

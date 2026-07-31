@@ -24,4 +24,9 @@ export class TemplatesController {
   syncFromMeta() {
     return this.templatesService.syncFromMeta();
   }
+
+  @Post('draft')
+  draftTemplate(@Body() body: { topic: string }) {
+    return this.templatesService.draftTemplate(body.topic);
+  }
 }

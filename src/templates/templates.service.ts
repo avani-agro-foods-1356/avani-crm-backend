@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 @Injectable()
 export class TemplatesService {
@@ -21,6 +22,23 @@ export class TemplatesService {
 
   remove(id: string) {
     return this.prisma.template.delete({ where: { id } });
+  }
+
+  async draftTemplate(topic: string) {
+    try {
+      const apiKey = process.env.GEMINI_API_KEY || 'AIzaSyAzz0LUgUt9DxicUZQmkoZv3zRh_EdWMlU';
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      
+      const prompt = `Draft a professional WhatsApp Business message template for Avani Loan Services about: ${topic}. 
+Keep it concise, polite, and persuasive. Use placeholders like {{1}} if needed. Only return the text of the message, no quotes.`;
+      
+      const result = await model.generateContent(prompt);
+      return { success: true, draft: result.response.text() };
+    } catch (e) {
+      console.error("Gemini Template Draft Error:", e);
+      return { success: false, error: e.message };
+    }
   }
 
   async syncFromMeta() {
