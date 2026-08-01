@@ -115,7 +115,7 @@ export default function CampaignsPage() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            name: campaignName || `Bland AI Scheduled Voice Campaign`,
+            name: campaignName || `OmniDim AI Scheduled Voice Campaign`,
             templateId: "VOICE_CALL",
             status: "SCHEDULED",
             type: "VOICE",
@@ -154,6 +154,15 @@ export default function CampaignsPage() {
       const row = csvRows[i];
       const name = row[nameColumn] || "Customer";
       let phone = row[recipientColumn] || "";
+      
+      // Fix for Scientific Notation from Excel CSVs (e.g., "9.1853E+11")
+      if (phone.toUpperCase().includes('E+')) {
+        const num = Number(phone);
+        if (!isNaN(num)) {
+          phone = num.toLocaleString('fullwide', {useGrouping:false});
+        }
+      }
+
       phone = phone.replace(/[^0-9+]/g, ""); // strip non-numeric but keep +
       
       if (!phone.startsWith("+") && phone.length > 0) {
@@ -162,7 +171,7 @@ export default function CampaignsPage() {
       }
 
       try {
-        const res = await fetch(`${API_URL}/bland/call`, {
+        const res = await fetch(`${API_URL}/leads/trigger`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ phone, name })
@@ -173,7 +182,12 @@ export default function CampaignsPage() {
           logs.unshift({ phone, name, status: "SUCCESS", message: `Call dispatched` });
         } else {
           failedCount++;
-          logs.unshift({ phone, name, status: "FAILED", message: `Server error` });
+          let errorMessage = "Server error";
+          try {
+            const errData = await res.json();
+            if (errData.error) errorMessage = errData.error;
+          } catch (e) {}
+          logs.unshift({ phone, name, status: "FAILED", message: errorMessage });
         }
       } catch (err: any) {
         failedCount++;
@@ -193,7 +207,7 @@ export default function CampaignsPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: campaignName || `Bland AI Voice Campaign`,
+          name: campaignName || `OmniDim Voice Campaign`,
           templateId: "VOICE_CALL",
           type: "VOICE",
           status: "COMPLETED"
@@ -212,7 +226,7 @@ export default function CampaignsPage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-2xl font-bold tracking-tight text-white">Voice Campaigns</h2>
-          <p className="text-sm text-zinc-400">Manage and dispatch automated AI voice calls via Bland AI</p>
+          <p className="text-sm text-zinc-400">Manage and dispatch automated AI voice calls via OmniDim AI</p>
         </div>
         <button
           onClick={() => {
@@ -289,7 +303,7 @@ export default function CampaignsPage() {
                   <div>
                     <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
                       <Phone className="text-indigo-500 w-5 h-5" /> 
-                      Bland AI Voice Campaign Setup
+                      OmniDim AI Voice Campaign Setup
                     </h3>
 
                     <div className="mb-6">
@@ -396,7 +410,7 @@ export default function CampaignsPage() {
                 </>
               ) : (
                 <div className="flex flex-col h-full">
-                  <h3 className="text-xl font-bold text-white mb-2">Dispatching Calls via Bland AI</h3>
+                  <h3 className="text-xl font-bold text-white mb-2">Dispatching Calls via OmniDim AI</h3>
                   <div className="w-full bg-zinc-800 rounded-full h-2 mb-6 overflow-hidden">
                     <div className="bg-indigo-500 h-2 rounded-full transition-all duration-300" style={{ width: `${sendProgress}%` }}></div>
                   </div>
